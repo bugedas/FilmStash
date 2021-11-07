@@ -39,7 +39,7 @@ thumbs.db
 .hg
 .svn
 .CVS
-ui/node_modules/
+node_modules/
 jscoverage_lib/
 src/main/webapp/WEB-INF/ftl/rsrc/
 src/main/webapp/rsrc/dist/
