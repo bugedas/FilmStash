@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://filmstash-backend.herokuapp.com/';
+export const API_BASE_URL = 'https://filmstash-backend.herokuapp.com';
 export const ACCESS_TOKEN = 'accessToken';
 
 export const OAUTH2_REDIRECT_URI = 'https://filmstash.herokuapp.com/oauth2/redirect'
