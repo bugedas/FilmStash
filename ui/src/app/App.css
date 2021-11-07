@@ -1,0 +1,17 @@
+.s-alert-box {
+    min-width: 250px;
+}
+
+.s-alert-close::before, .s-alert-close::after {
+    width: 2px;
+}
+
+.app {
+    background-color: #2b2929;
+    height: 100%;
+}
+
+html, body, #app, #app>div {
+    height: 100%;
+    background-color: #2b2929;
+}
