@@ -1,7 +1,18 @@
 .app-header {
     height: 60px;
-    position: relative;
+    position: fixed;
     z-index: 10;
+    box-shadow: 0 10px 50px;
+    background-color: #2b2929;
+    width: 100%;
+}
+
+.hamburger {
+    display: none;
+}
+
+.mobile-nav, .mobile-nav-show {
+    display: none;
 }
 
 .app-title {
@@ -23,7 +34,7 @@
 }
 
 .app-nav ul {
-    list-style-position: none;
+    list-style-position: unset;
     margin: 0;
     padding: 0;
 }
@@ -40,12 +51,61 @@
     padding-left: 15px;
     padding-right: 15px;
     color: #EE3232;
+    font-family: "Lemon-Milk-Light", serif;
 }
 
-.app-nav ul li a:hover {
-    color: #0f96f6;
+.mobile-nav-show ul li a:hover, .mobile-nav ul li a:hover, .app-nav ul li a:hover {
+    text-decoration: underline;
 }
 
-.app-nav ul li a.active {
-    color: #0f96f6;
+@media only screen and (max-width: 768px) {
+    .hamburger {
+        display: block;
+        line-height: 67px;
+        vertical-align: middle;
+        float: left;
+        padding-left: 10px;
+    }
+
+    .mobile-nav-show {
+        display: block;
+        transition: left 0.5s;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 150px;
+        height: 100%;
+        background-color: #2b2929;
+        box-shadow: 5px 10px 8px;
+    }
+
+    .mobile-nav {
+        position: fixed;
+        display: block;
+        left: -170px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 150px;
+        height: 100%;
+        transition: left 0.5s;
+        background-color: #2b2929;
+        box-shadow: 5px 10px 8px;
+    }
+
+    .mobile-nav-show ul li a, .mobile-nav ul li a {
+        line-height: 40px;
+        color: #EE3232;
+        font-family: "Lemon-Milk-Light", serif;
+    }
+
+    .mobile-nav-show ul li, .mobile-nav ul li {
+        list-style-type: none;
+    }
+
+    .app-nav {
+        display: none;
+    }
 }

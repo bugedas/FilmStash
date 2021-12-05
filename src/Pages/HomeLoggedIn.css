@@ -1,0 +1,26 @@
+.home {
+    display: flex;
+    gap: 30px;
+}
+
+.recommended-section {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+.posts-section {
+    padding-top: 100px;
+}
+
+.friends-sidebar-section {
+    display: block;
+}
+
+@media only screen and (max-width: 768px) {
+    .friends-sidebar-section {
+        display: none;
+    }
+}

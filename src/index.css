@@ -1,21 +1,21 @@
 * {
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 *:before,
 *:after {
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 input[type="checkbox"],
 input[type="radio"] {
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   padding: 0;
 }
 
@@ -34,7 +34,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   padding-left: 15px;
-  padding-right: 15px; 
+  padding-right: 15px;
 }
 
 @media screen and (min-width: 1200px) {
@@ -103,10 +103,10 @@ a:hover {
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: #2098f3;
-    border-color: #2098f3;  
-} 
+  color: #fff;
+  background-color: #2098f3;
+  border-color: #2098f3;
+}
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
   background-color: #40a9ff;
@@ -114,9 +114,9 @@ a:hover {
 }
 
 .btn-success {
-    color: #fff;
-    background-color: #52c41a;
-    border-color: #52c41a;    
+  color: #fff;
+  background-color: #52c41a;
+  border-color: #52c41a;
 }
 
 .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active {
@@ -141,19 +141,19 @@ a:hover {
 **/
 
 .form-item {
-	margin-bottom: 18px;
+  margin-bottom: 18px;
 }
 
 .form-item .btn {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .form-item label {
-    font-size: 0.85em;
-    font-weight: 500;
-    display: inline-block;
-    margin-bottom: 5px;
-    color: rgba(0,0,0,.65);
+  font-size: 0.85em;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 5px;
+  color: rgba(0,0,0,.65);
 }
 
 .form-control {
@@ -184,7 +184,7 @@ a:hover {
 }
 
 .form-control:focus, .form-control:active {
-  box-shadow: 0 0 0 2px rgba(24,144,255,.2);    
+  box-shadow: 0 0 0 2px rgba(24,144,255,.2);
 }
 
 .form-control.invalid {
@@ -192,8 +192,8 @@ a:hover {
 }
 
 .form-control.invalid:focus, .form-control.invalid:active {
-  box-shadow: 0 0 0 2px rgba(245,34,45,.2);        
-} 
+  box-shadow: 0 0 0 2px rgba(245,34,45,.2);
+}
 
 .form-control[disabled], fieldset[disabled] .form-control {
   cursor: not-allowed;
@@ -219,7 +219,7 @@ a:hover {
   display: block;
   margin-top: 20px;
   margin-bottom: 30px;
-  font-size: 1em;    
+  font-size: 1em;
 }
 
 .or-text {
@@ -229,4 +229,11 @@ a:hover {
   background: #fff;
   padding: 10px;
   color: rgba(0,0,0,.45);
+}
+
+@font-face {
+  font-family: "Lemon-Milk-Light";
+  src: local("Lemon-Milk-Light"),
+  url("./Fonts/LEMONMILK-Light.otf") format("opentype");
+  /*font-weight: bold;*/
 }

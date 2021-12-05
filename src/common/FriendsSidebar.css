@@ -1,0 +1,21 @@
+.friends-section {
+    width: 200px;
+    border-radius: 15px;
+    border: 3px solid #2e2e2e;
+    padding: 5px;
+}
+
+.friends-section-header {
+    color: #EE3232;
+    font-family: "Lemon-Milk-Light", serif;
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.friend-line a {
+    font-family: "Lemon-Milk-Light", serif;
+    font-size: 12px;
+    color: #EFEDED;
+    padding-bottom: 3px;
+}
