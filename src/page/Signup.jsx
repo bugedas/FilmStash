@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import fbLogo from '../Images/fb-logo.png';
-import googleLogo from '../Images/google-logo.png';
-import githubLogo from '../Images/github-logo.png';
-import {FACEBOOK_AUTH_URL, GITHUB_AUTH_URL, GOOGLE_AUTH_URL} from "../Constants/constants";
-import {isLoggedIn, signup} from "../Utils/APIUtils";
+import fbLogo from '../image/fb-logo.png';
+import googleLogo from '../image/google-logo.png';
+import githubLogo from '../image/github-logo.png';
+import {FACEBOOK_AUTH_URL, GITHUB_AUTH_URL, GOOGLE_AUTH_URL} from "../constant/constants";
+import {isLoggedIn, signup} from "../util/APIUtils";
 import Alert from "react-s-alert";
 import { Navigate } from 'react-router-dom';
 import './Signup.css';

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import FilmCard from "../Common/FilmCard";
+import FilmCard from "../common/FilmCard";
 import './HomeLoggedIn.css';
-import PostsByIds from "../Common/PostsByIds";
+import PostsByIds from "../common/PostsByIds";
 import {getRequest, getImdbRequest} from "../axios-wrapper";
-import FriendsSidebar from "../Common/FriendsSidebar";
+import FriendsSidebar from "../common/FriendsSidebar";
 
 export default function HomeLoggedIn() {
 

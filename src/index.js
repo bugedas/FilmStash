@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import './Fonts/LEMONMILK-Light.otf'
+import './font/LEMONMILK-Light.otf'
 
 ReactDOM.render(
   <React.StrictMode>

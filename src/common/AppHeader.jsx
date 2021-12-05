@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {ACCESS_TOKEN} from "../Constants/constants";
+import {ACCESS_TOKEN} from "../constant/constants";
 import Alert from "react-s-alert";
-import logo from '../Images/FilmstashLogo.png';
+import logo from '../image/FilmstashLogo.png';
 import './AppHeader.css';
-import {isLoggedIn} from "../Utils/APIUtils";
+import {isLoggedIn} from "../util/APIUtils";
 import MenuIcon from '@mui/icons-material/Menu';
 
 function useOutsideAlerter(ref, setShowMobileMenu) {

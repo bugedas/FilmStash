@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {editPost, getCommentsByPostId, getUserById, postComment} from "../Utils/APIUtils";
-import filmPlaceholder from "../Images/film-placeholder.png";
+import {editPost, getCommentsByPostId, getUserById, postComment} from "../util/APIUtils";
+import filmPlaceholder from "../image/film-placeholder.png";
 import './Post.css';
 import Alert from "react-s-alert";
 import * as moment from 'moment'

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ACCESS_TOKEN} from "../Constants/constants";
+import {ACCESS_TOKEN} from "../constant/constants";
 import {Navigate, useLocation} from "react-router-dom";
 
 export default function OAuth2RedirectHandler() {

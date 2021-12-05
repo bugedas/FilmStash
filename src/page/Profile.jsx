@@ -1,19 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import './Profile.css';
 import {getRequest} from "../axios-wrapper";
-import PostsByIds from "../Common/PostsByIds";
-import {useParams} from "react-router-dom";
+import PostsByIds from "../common/PostsByIds";
 
 export default function Profile() {
-
-    const {id} = useParams();
 
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
 
         const getUserData = async () => {
-            const userData = await getRequest(`/api/user/id/${id}`);
+            const userData = await getRequest(`/api/user/me`);
             setCurrentUser(userData.data);
         }
 

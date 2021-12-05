@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from '../Images/FilmstashLogo.png';
+import logo from '../image/FilmstashLogo.png';
 import './Home.css';
-import {isLoggedIn} from "../Utils/APIUtils";
+import {isLoggedIn} from "../util/APIUtils";
 import HomeLoggedIn from "./HomeLoggedIn";
 
 export default function Home () {

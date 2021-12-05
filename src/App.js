@@ -1,17 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
-import AppHeader from "./Common/AppHeader";
+import AppHeader from "./common/AppHeader";
 import {Route, Router, Routes} from "react-router-dom";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import Signup from "./Pages/Signup";
-import OAuth2RedirectHandler from "./Auth/OAuth2RedirectHandler";
-import NotFound from "./Pages/NotFound";
-import Profile from "./Pages/Profile";
-import HomeLoggedIn from "./Pages/HomeLoggedIn";
-import Film from "./Pages/Film";
-import User from "./Pages/User";
-import AppFooter from "./Common/AppFooter";
+import Home from "./page/Home";
+import Login from "./page/Login";
+import Signup from "./page/Signup";
+import OAuth2RedirectHandler from "./authentication/OAuth2RedirectHandler";
+import NotFound from "./page/NotFound";
+import Profile from "./page/Profile";
+import HomeLoggedIn from "./page/HomeLoggedIn";
+import Film from "./page/Film";
+import User from "./page/User";
+import AppFooter from "./common/AppFooter";
 
 function App() {
 

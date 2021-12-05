@@ -234,6 +234,6 @@ a:hover {
 @font-face {
   font-family: "Lemon-Milk-Light";
   src: local("Lemon-Milk-Light"),
-  url("./Fonts/LEMONMILK-Light.otf") format("opentype");
+  url("font/LEMONMILK-Light.otf") format("opentype");
   /*font-weight: bold;*/
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import filmPlaceholder from '../Images/film-placeholder.png';
+import filmPlaceholder from '../image/film-placeholder.png';
 import './FilmCard.css';
 import {useNavigate} from "react-router-dom";
 

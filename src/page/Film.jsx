@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './Film.css';
 import {useNavigate, useParams} from "react-router-dom";
 import {getImdbRequest, getRequest, postRequest} from "../axios-wrapper";
-import filmPlaceholder from "../Images/film-placeholder.png";
+import filmPlaceholder from "../image/film-placeholder.png";
 import * as moment from "moment";
 import {top250} from '../imdb/top250';
 
