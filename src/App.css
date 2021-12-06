@@ -8,7 +8,6 @@
 
 .app {
   background-color: #2b2929;
-  height: 100vh;
 }
 
 html, body, #app, #app>div {
@@ -18,4 +17,9 @@ html, body, #app, #app>div {
 
 .app-body {
   padding: 100px 10% 100px 10%;
+  height: 100%;
+}
+
+.app-body-wrapper {
+  height: 100vh;
 }

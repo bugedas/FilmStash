@@ -3,6 +3,7 @@
     box-shadow: 0 10px 50px;
     background-color: #2b2929;
     width: 100%;
+    float: bottom;
 }
 
 .filmstash {
