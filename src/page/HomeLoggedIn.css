@@ -15,12 +15,12 @@
     padding-top: 100px;
 }
 
-.friends-sidebar-section {
+.sidebar-section {
     display: block;
 }
 
 @media only screen and (max-width: 768px) {
-    .friends-sidebar-section {
+    .sidebar-section {
         display: none;
     }
 }

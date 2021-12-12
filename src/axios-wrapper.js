@@ -41,8 +41,6 @@ const axiosRequest = (config) => {
     return axiosInstance.request(config).then(data=>{
         return Promise.resolve({data: data.data, error: null})
     }).catch(error=>{
-        console.log('config', config);
-        console.log('error', error);
         return Promise.resolve({error, data:null})
     })
 }
@@ -64,6 +62,9 @@ const postRequest = async (url, data) =>
 const deleteRequest = async (url, getConfig) =>
     await axiosRequest(makeRequestConfig(url, "DELETE", getConfig));
 
+const putRequest = async (url, data) =>
+    await axiosInstance.put(url, data);
+
 const getImdbRequest = async (url, getConfig) =>
     await axiosImdbRequest(makeRequestConfig(url, "GET", getConfig));
 
@@ -77,5 +78,6 @@ export {
     getRequest,
     postRequest,
     getImdbRequest,
-    deleteRequest
+    deleteRequest,
+    putRequest
 }

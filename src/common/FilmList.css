@@ -1,0 +1,47 @@
+.film-list-section {
+    width: 200px;
+    border-radius: 15px;
+    border: 3px solid #2e2e2e;
+    padding: 5px;
+    margin-top: 30px;
+}
+
+.film-list-section-header {
+    color: #EE3232;
+    font-family: "Lemon-Milk-Light", serif;
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.film-in-a-list {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    transition: all, 0.2s;
+}
+
+.film-in-a-list:hover {
+    transform: scale(1.2);
+}
+
+.film-in-a-list-image {
+    width: 100px;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.film-in-a-list-title {
+    color: #EFEDED;
+    font-family: "Lemon-Milk-Light", serif;
+    font-size: 12px;
+}
+
+.film-in-a-list-delete {
+    color: #EE3232;
+    font-family: "Lemon-Milk-Light", serif;
+    font-size: 12px;
+    float: right;
+    cursor: pointer;
+}

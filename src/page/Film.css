@@ -92,3 +92,10 @@
 .film-page-image {
     width: 300px;
 }
+
+.film-page-add-to-list {
+    padding-left: 15px;
+    cursor: pointer;
+    text-align: right;
+    display: inline-block;
+}

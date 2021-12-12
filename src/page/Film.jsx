@@ -32,10 +32,28 @@ export default function Film() {
             }
     }
 
+    const addFilmToList = () => {
+        const data = {
+            filmId: film.id,
+            userId: user.id,
+            userRated: 0,
+            listType: 'watched',
+            fullTitle: film.fullTitle,
+            year: film.year,
+            image: film.image,
+            crew: film.crew,
+            imdbRating: film.imDbRating,
+            imdbRatingCount:film.imDbRatingCount,
+            title: film.title,
+            rankNr: film.rank,
+            type: 'Film'
+        }
+
+        postRequest('/api/films/add', data);
+    }
+
     useEffect(() => {
         const getData = async () => {
-            // const filmData = await getRequest(`/api/films/id/${id}`);
-            // setFilm(filmData.data);
             const filmsData = top250.items;
             const thisFilm = filmsData.filter(f => {
                 return f.id === id;
@@ -56,13 +74,13 @@ export default function Film() {
         <div className={'film-page'}>
             <div className={'film-page-header'}>
                 {film.fullTitle}
+                <div className={'film-page-share-button'} onClick={addFilmToList}>ADD TO LIST</div>
             </div>
             <div className={'film-page-data'}>
                 <span className={'film-page-year'}>Year: {film.year}</span>
-                <span className={'film-page-imdb'}>IMDB Rating: {film.imdbRating}</span>
+                <span className={'film-page-imdb'}>IMDB Rating: {film.imDbRating}</span>
             </div>
-            <img src={film.image ? film.image : '../Images/film-placeholder.png'} alt={film.fullTitle} className={'film-page-image'}/>
-            {/*<img src={filmPlaceholder} width={'100%'} alt={film.fullTitle} className={'film-page-image'}/>*/}
+            <img src={film.image ? film.image : filmPlaceholder} alt={film.fullTitle} className={'film-page-image'}/>
             <div className={'film-page-bottom-row'}>
                 <div className={'film-page-crew'}>
                     Film crew: {film.crew}

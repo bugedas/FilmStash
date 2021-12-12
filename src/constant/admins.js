@@ -1,0 +1,1 @@
+export const admins = ['admin@filmstash.com', 'administrator@filmstash.com'];

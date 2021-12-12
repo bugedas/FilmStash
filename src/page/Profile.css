@@ -1,5 +1,7 @@
 .profile-container {
     padding-top: 30px;
+    flex: 1;
+    justify-content: center;
 }
 
 .profile-info {
@@ -47,4 +49,10 @@
 .posts-section {
     max-width: 600px;
     margin: 0 auto;
+}
+
+.profile-wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
 }

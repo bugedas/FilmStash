@@ -5,6 +5,7 @@ import logo from '../image/FilmstashLogo.png';
 import './AppHeader.css';
 import {isLoggedIn} from "../util/APIUtils";
 import MenuIcon from '@mui/icons-material/Menu';
+import {getRequest} from "../axios-wrapper";
 
 function useOutsideAlerter(ref, setShowMobileMenu) {
     useEffect(() => {
@@ -71,7 +72,7 @@ function MenuList() {
             { isLoggedIn() ? (
                 <ul>
                     <li>
-                        {}
+                        {<Search />}
                     </li>
                     <li>
                         <a href="/profile">Profile</a>
@@ -91,5 +92,41 @@ function MenuList() {
                 </ul>
             )}
         </>
+    )
+}
+
+function Search() {
+    const [search, setSearch] = useState('');
+    const [showSearchDropdown, setShowSearchDropdown] = useState({});
+    const [users, setUsers] = useState(null);
+
+    useEffect(async () => {
+        const usersData = await getRequest(`/api/user`);
+        setUsers(usersData.data);
+    }, []);
+
+    return (
+        <div className={'search-bar'}>
+            <textarea className={'search-input'} rows={1} value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder={'Search user...'}
+                      onFocus={() => setShowSearchDropdown(true)}
+                      onBlur={() => setShowSearchDropdown(false)}
+            />
+            {search.length > 0 &&
+                <div className={'search-dropdown'}>
+                    <ul className={'search-dropdown-list'}>
+                        {users.filter(user => {return user.email.toLowerCase().includes(search.toLowerCase())})
+                            .slice(0, 3).map(user => {
+                            return(
+                                <li className={'search-dropdown-list-item'} key={user.id}>
+                                    <a href={`/user/${user.id}`}>{user.email}</a>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </div>
+            }
+        </div>
     )
 }

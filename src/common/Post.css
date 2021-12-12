@@ -27,7 +27,7 @@
     display: flex;
     align-content: space-between;
     justify-content: center;
-    gap: 40px;
+    /*gap: 40px;*/
     padding-top: 10px;
     padding-bottom: 10px;
     border-top: 3px solid #2e2e2e;
@@ -36,7 +36,8 @@
 
 .post-card-button {
     display: inline-block;
-    width: 150px;
+    max-width: 150px;
+    width: 100%;
     height: 30px;
     background-color: transparent;
     border: none;
@@ -101,6 +102,16 @@
 .comment-date {
     float: right;
     display: inline-block;
+}
+
+.comment-delete {
+    float: right;
+    display: inline-block;
+    font-family: "Lemon-Milk-Light", serif;
+    font-weight: bold;
+    color: #EE3232;
+    padding-left: 10px;
+    cursor: pointer;
 }
 
 .comment-message {

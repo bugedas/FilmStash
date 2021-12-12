@@ -1,10 +1,11 @@
 import React from 'react';
 import {ACCESS_TOKEN} from "../constant/constants";
-import {Navigate, useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export default function OAuth2RedirectHandler() {
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const getUrlParameter = (name) => {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -18,8 +19,10 @@ export default function OAuth2RedirectHandler() {
 
     if(token) {
         localStorage.setItem(ACCESS_TOKEN, token);
-        return <Navigate to={'/profile'}/>;
+        navigate('/profile');
+        return null;
     } else {
-        return <Navigate to={"/login"}/>;
+        navigate('/login');
+        return null;
     }
 }

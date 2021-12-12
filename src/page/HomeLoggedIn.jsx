@@ -4,6 +4,7 @@ import './HomeLoggedIn.css';
 import PostsByIds from "../common/PostsByIds";
 import {getRequest, getImdbRequest} from "../axios-wrapper";
 import FriendsSidebar from "../common/FriendsSidebar";
+import FilmList from "../common/FilmList";
 
 export default function HomeLoggedIn() {
 
@@ -17,7 +18,7 @@ export default function HomeLoggedIn() {
             setAllFilms(filmsData.data.items);
             const userData = await getRequest(`/api/user/me`);
             setUser(userData.data);
-            const friendsData = await getRequest(`/api/friends/user/${userData.data.id}`);
+            const friendsData = await getRequest(`/api/friends/user/${userData?.data?.id}`);
             const friendIds = friendsData.data.map(f => {
                 return f.followedId;
             })
@@ -35,7 +36,7 @@ export default function HomeLoggedIn() {
         <div className={'home'}>
             <div className={'main-sections-wrapper'}>
                 <div className={'recommended-section'}>
-                    {allFilms.slice(0, 6).map(film => {
+                    {allFilms.sort(() => Math.random() - 0.5).slice(0, 6).map(film => {
                         return (
                             <FilmCard key={film.id} image={film.image} fullTitle={film.fullTitle} filmId={film.id}/>
                         )
@@ -46,8 +47,9 @@ export default function HomeLoggedIn() {
                     <PostsByIds userIds={friends}/>
                 </div>
             </div>
-            <div className={'friends-sidebar-section'}>
+            <div className={'sidebar-section'}>
                 <FriendsSidebar userId={user.id}/>
+                <FilmList userId={user.id}/>
             </div>
         </div>
     )

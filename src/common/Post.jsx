@@ -4,10 +4,12 @@ import filmPlaceholder from "../image/film-placeholder.png";
 import './Post.css';
 import Alert from "react-s-alert";
 import * as moment from 'moment'
-import {getRequest, deleteRequest} from "../axios-wrapper";
+import {getRequest, deleteRequest, putRequest} from "../axios-wrapper";
 import {useNavigate} from "react-router-dom";
 import {top250} from "../imdb/top250";
 import DeleteDialog from "./DeleteDialog";
+import {admins} from "../constant/admins";
+import {hasPermissions} from "../util/axiosUtils";
 
 export default function Post(props){
     const [film, setFilm] = useState(null);
@@ -67,7 +69,7 @@ export default function Post(props){
 
     return (
         <div className={'post-card'}>
-            {user.id === currUser.id &&
+            {(user.id === currUser.id || admins.includes(currUser.email)) &&
                 <>
                     <div className={'post-card-delete-button'} onClick={() => setDeleteDialog(true)}>DELETE</div>
                     <DeleteDialog
@@ -93,7 +95,7 @@ export default function Post(props){
                 <button className={'post-card-button'} onClick={() => setShowWriteComment(!showWriteComment)}>Comment</button>
                 <button className={'post-card-button'}>Share</button>
             </div>
-            <PostCommentSection thisUserId={props.userId} showWriteComment={showWriteComment} postId={props.id}/>
+            <PostCommentSection currentUserId={currUser.id} thisUserId={props.userId} showWriteComment={showWriteComment} postId={props.id}/>
         </div>
     )
 }
@@ -105,6 +107,11 @@ function PostCommentSection(props) {
 
     const moreComments = () => {
         setShowCommentsAmount(showCommentsAmount + 5);
+    }
+
+    const handleDeleteComment = (id) => {
+        deleteRequest(`/api/comments/${id}`);
+        setComments(comments.filter(c => {return c.id !== id}));
     }
 
     useEffect(() => {
@@ -124,7 +131,7 @@ function PostCommentSection(props) {
                 const NewDate = moment(yourDate, 'YYYY-MM-DD')
                 const data = {
                     postId: props.postId,
-                    userId: props.thisUserId,
+                    userId: props.currentUserId,
                     message: writtenComment,
                     likes: 0,
                     date: NewDate,
@@ -154,7 +161,7 @@ function PostCommentSection(props) {
             <div className={'collapse-comments'} onClick={() => setShowCommentsAmount(1)}>Hide comments...</div>
             }
             {comments && comments.slice(0, showCommentsAmount).map(comment => {
-                return (<Comment key={comment.id} {...comment}/>);
+                return (<Comment handleDeleteComment={handleDeleteComment} key={comment.id} {...comment}/>);
             })}
             {comments && comments.length > showCommentsAmount &&
                 <div className={'show-more-comments'} onClick={moreComments}>Show more comments...</div>
@@ -165,14 +172,44 @@ function PostCommentSection(props) {
 
 function Comment(props) {
     const [user, setUser] = useState(null);
+    const [hasPerm, setHasPerm] = useState(false);
+    const [editComment, setEditComment] = useState(false);
+    const [writtenComment, setWrittenComment] = useState(props.message);
+    const [currComment, setCurrComment] = useState(props.message);
+
+    const editCommentHandler = (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            if (writtenComment.length > 0) {
+                const yourDate = new Date()
+                const NewDate = moment(yourDate, 'YYYY-MM-DD')
+                const data = {
+                    postId: props.postId,
+                    userId: props.currentUserId,
+                    message: writtenComment,
+                    likes: 0,
+                    date: NewDate,
+                }
+
+                putRequest(`/api/comments/${props.id}`, data)
+                    .then(response => {
+                        setCurrComment(data.message);
+                        setEditComment(false);
+                    });
+            }
+        }
+    }
 
     useEffect(() => {
-        getUserById(props.userId)
-            .then(response => {
-                setUser(response);
-            }).catch(error => {
-            setUser(error);
-        });
+        const getData = async () => {
+            console.log(props.userId);
+            const userData = await getRequest(`/api/user/id/${props.userId}`);
+            setUser(userData.data);
+            const perm = await hasPermissions(props.userId);
+            setHasPerm(perm);
+        }
+
+        getData();
     }, []);
 
     if(user === null) {
@@ -183,9 +220,25 @@ function Comment(props) {
         <div className={'comment'}>
             <div className={'comment-header'}>
                 <div className={'comment-name'}>{user.name}</div>
+                {hasPerm &&
+                    <>
+                        <div className={'comment-delete'} onClick={() => props.handleDeleteComment(props.id)}>DELETE</div>
+                        <div className={'comment-delete'} onClick={() => setEditComment(!editComment)}>{editComment ? 'CLOSE EDIT' : 'EDIT'}</div>
+                    </>
+                }
                 <div className={'comment-date'}>{props.date}</div>
             </div>
-            <div className={'comment-message'}>{props.message}</div>
+            <div className={'comment-message'}>
+                {editComment ?
+                        <textarea className={'comment-input'} rows={5} value={writtenComment}
+                                  onChange={(e) => setWrittenComment(e.target.value)}
+                                  placeholder={'Write a comment...'}
+                                  onKeyDown={editCommentHandler}
+                        />
+                    :
+                    currComment
+                }
+            </div>
         </div>
     )
 }

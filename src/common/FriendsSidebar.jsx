@@ -18,7 +18,7 @@ export default function FriendsSidebar(props) {
         <div className={'friends-section'}>
             <div className={'friends-section-header'}>FRIENDS</div>
             {friends.map(f => {
-                return (<FriendLine friendId={f.followedId}/>)
+                return (<FriendLine key={f.id} friendId={f.followedId}/>)
             })}
         </div>
     )
