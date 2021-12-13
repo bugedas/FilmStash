@@ -150,4 +150,23 @@
     .app-nav {
         display: none;
     }
+
+    .menu-search {
+        display: none;
+    }
+
+    .search-input {
+        vertical-align: top;
+    }
+
+    .mobile-search {
+        display: inline-block;
+        margin-left: 30px;
+    }
+
+    .mobile-search ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
 }

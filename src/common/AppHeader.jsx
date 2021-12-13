@@ -37,6 +37,9 @@ export default function AppHeader() {
                 </div>
                 <div className={'hamburger'}>
                     <MenuIcon style={{fill: '#EE3232'}} onClick={() => setShowMobileMenu(!showMobileMenu)}/>
+                    <div className={'mobile-search'}>
+                        <Search/>
+                    </div>
                 </div>
                 <MobileNav showMenu={showMobileMenu} setShowMobileMenu={setShowMobileMenu}/>
                 <div className="app-options">
@@ -72,7 +75,9 @@ function MenuList() {
             { isLoggedIn() ? (
                 <ul>
                     <li>
+                        <div className={'menu-search'}>
                         {<Search />}
+                        </div>
                     </li>
                     <li>
                         <a href="/profile">Profile</a>
