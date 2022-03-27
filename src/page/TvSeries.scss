@@ -1,0 +1,171 @@
+@use '../constant/variables' as v;
+
+.tv-page {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.tv-page-header {
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 38px;
+  color: v.$red;
+}
+
+.tv-page-data {
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 15px;
+  color: v.$white_dark;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.tv-page-imdb {
+  padding-left: 30px;
+}
+
+.tv-page-crew {
+  font-size: 15px;
+  color: v.$white_dark;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+
+
+.tv-page-share-button, .tv-page-post-button {
+  width: 150px;
+  background-color: transparent;
+  color: v.$white_dark;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 15px;
+  transition: all 0.1s;
+  border-radius: 10px;
+  border: 3px solid #383838;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 20px 10px 0;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.tv-page-share-button:hover {
+  background-color: #383838;
+  cursor: pointer;
+}
+
+.tv-page-share-input {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  height: 80px;
+  width: 100%;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 3px solid #383838;
+  overflow: hidden;
+  resize: none;
+  color: v.$white_dark;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.tv-page-image {
+  max-width: 100%;
+  max-height: 450px;
+}
+
+.tv-page-add-to-list {
+  padding-left: 15px;
+  cursor: pointer;
+  text-align: right;
+  display: inline-block;
+}
+
+.tv-page-about {
+  margin-top: 30px;
+  text-align: left;
+  font-family: v.$font_sans;
+}
+
+.tv-page-bottom-row {
+  margin-top: 30px;
+}
+
+.tv-page-about-content {
+  margin-bottom: 15px;
+}
+
+.tv-page-about-header {
+  color: v.$grey_light_4;
+  margin-top: 10px;
+}
+
+.tv-page-bottom-image {
+  display: inline;
+  width: 170px;
+  margin: 0 15px;
+  cursor: pointer;
+}
+
+.tv-page-bottom-image-container {
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+}
+
+.tv-page-bottom-image-arrow {
+  margin: auto;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.tv-page-bottom-arrow-container {
+  cursor: pointer;
+  width: 24px;
+  margin: auto;
+}
+
+.tv-page-bottom-cast-container {
+  margin-top: 30px;
+  display: flex;
+  //flex-direction: row;
+}
+
+.tv-page-bottom-cast-person {
+  font-family: v.$font_sans;
+  margin: 0 10px;
+  width: 200px;
+}
+
+.tv-page-bottom-cast-person-image {
+  object-fit: cover;
+  object-position: top;
+  width:100px;
+  height:100px;
+  border-radius: 50%;
+}
+
+.tv-page-bottom-cast-person-character {
+  color: v.$grey_light_4;
+}
+
+.tv-page-cast-header {
+  margin-top: 30px;
+}
+
+.tv-page-watch-provider-image {
+  width: 80px;
+  margin: 15px;
+}
+
+.tv-page-watch-header {
+  margin-top: 30px;
+}
+
+.tv-page-about-season-count-header {
+  color: v.$grey_light_4;
+}

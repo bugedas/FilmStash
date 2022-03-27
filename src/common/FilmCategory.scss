@@ -1,0 +1,24 @@
+@use '../constant/variables' as v;
+
+.film-category-container {
+  border-radius: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px black;
+}
+
+.film-category-content-container {
+  white-space: nowrap;
+  overflow-x: scroll;
+  //margin: 5px;
+}
+
+.film-category-header {
+  text-align: left;
+  font-size: 20px;
+  //text-decoration: underline;
+  color: v.$red;
+  padding-top: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+}

@@ -1,0 +1,35 @@
+@use './constant/variables' as v;
+
+.app {
+  background-color: #2b2929;
+  color: white;
+  font-family: "Lemon-Milk-Light", serif;
+}
+
+html, body {
+  height: 100%;
+  background-color: #2b2929;
+}
+
+.app-body {
+  padding: 100px 10% 100px 10%;
+  min-height: 80vh;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  //box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: v.$red;
+  border-radius: 5px;
+}

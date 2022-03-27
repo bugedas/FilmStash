@@ -6,7 +6,7 @@ export default function PostsByIds(props) {
 
     const [posts, setPosts] = useState(null);
 
-    useEffect( () => {
+    useEffect(() => {
 
         const getPostOfUser = async (thisId) => {
             const {data} = await getRequest(`/api/posts/user/${thisId}`);

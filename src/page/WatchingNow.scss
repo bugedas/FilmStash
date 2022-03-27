@@ -1,0 +1,87 @@
+@use '../constant/variables' as v;
+
+.watching-now-container {
+  width: 100%;
+}
+
+.watching-now-tv-image {
+  width: 120px;
+  display: inline-block;
+}
+
+.watching-now-about {
+  display: inline-block;
+  vertical-align: top;
+  text-align: left;
+  margin-left: 15px;
+}
+
+
+.watching-now-about-seasons {
+  color: v.$grey_light_4;
+  font-family: v.$font_sans;
+}
+
+.watching-now-about-next-episode-button {
+  width: 250px;
+  background-color: transparent;
+  color: v.$white_dark;
+  font-family: v.$font_sans;
+  font-size: 15px;
+  transition: all 0.1s;
+  border-radius: 10px;
+  border: 3px solid v.$grey_light_2;
+  text-align: center;
+  padding: 5px 0;
+  cursor: pointer;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: v.$grey_light_2;
+    cursor: pointer;
+  }
+}
+
+.watching-now-title {
+  font-family: v.$font_lemon;
+  margin-bottom: 30px;
+}
+
+.watching-now-dropdown-container {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.watching-now-person-section {
+  vertical-align: top;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.watching-now-about-friend-episodes {
+  width: 250px;
+  color: v.$white_dark;
+  font-family: v.$font_sans;
+  font-size: 15px;
+  padding: 5px 0;
+  margin-top: 20px;
+}
+
+.watching-now-title-list {
+  font-family: v.$font_lemon;
+  margin: 30px 0 10px;
+  color: v.$red;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
+.watching-now-full-section-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.watching-now-person-name {
+  font-size: 25px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid v.$white_dark;
+}

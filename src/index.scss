@@ -1,0 +1,54 @@
+.container {
+  width: 100%;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+body {
+  margin: 0;
+}
+
+html, body, #app, #app>div {
+  height: 100%;
+  width: 100% !important;
+}
+
+@media screen and (min-width: 1200px) {
+  .container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@font-face {
+  font-family: "Lemon-Milk-Light";
+  src: local("Lemon-Milk-Light"),
+  url("font/LEMONMILK-Light.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "DMSans";
+  src: local("DMSans"),
+  url("font/DMSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "DMSans-Bold";
+  src: local("DMSans-Bold"),
+  url("font/DMSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "DMSans-BoldItalic";
+  src: local("DMSans-BoldItalic"),
+  url("font/DMSans-BoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "DMSans-Italic";
+  src: local("DMSans-Italic"),
+  url("font/DMSans-Italic.ttf") format("truetype");
+}

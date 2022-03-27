@@ -1,5 +1,5 @@
 import React from 'react';
-import './AppFooter.css';
+import './AppFooter.scss';
 
 export default function AppFooter() {
     return(
@@ -10,7 +10,7 @@ export default function AppFooter() {
                 <li><a href={'/profile'}>PROFILE</a></li>
             </ul>
         </div>
-        <div className={'filmstash'}> FILMSTASH 2021</div>
+        <div className={'footer-filmstash'}> FILMSTASH 2021</div>
     </div>
     )
 }

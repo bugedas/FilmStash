@@ -23,7 +23,8 @@
 }
 
 .film-in-a-list:hover {
-    transform: scale(1.2);
+    background-color: #383434;
+    box-shadow: 0 0 20px 5px #383434;
 }
 
 .film-in-a-list-image {
@@ -42,6 +43,7 @@
     color: #EE3232;
     font-family: "Lemon-Milk-Light", serif;
     font-size: 12px;
-    float: right;
+    text-align: right;
     cursor: pointer;
+    transition: all 0.2s;
 }

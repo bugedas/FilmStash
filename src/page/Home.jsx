@@ -1,8 +1,8 @@
 import React from 'react';
 import logo from '../image/FilmstashLogo.png';
-import './Home.css';
-import {isLoggedIn} from "../util/APIUtils";
+import './Home.scss';
 import HomeLoggedIn from "./HomeLoggedIn";
+import {isLoggedIn} from "../util/axiosUtils";
 
 export default function Home () {
 
@@ -14,9 +14,7 @@ export default function Home () {
 
     return (
         <div className="home-container">
-            <div className="container">
-                <img src={logo} alt="Logo" className={'logoImg'}/>
-            </div>
+            <img src={logo} alt="Logo" className={'home-logoImg'}/>
         </div>
     )
 }

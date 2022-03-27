@@ -1,5 +1,5 @@
 import React from 'react';
-import './DeleteDialog.css';
+import './DeleteDialog.scss';
 import {Dialog, DialogContent, DialogTitle} from "@mui/material";
 
 export default function DeleteDialog(props) {

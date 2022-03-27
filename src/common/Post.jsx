@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {editPost, getCommentsByPostId, getUserById, postComment} from "../util/APIUtils";
 import filmPlaceholder from "../image/film-placeholder.png";
-import './Post.css';
-import Alert from "react-s-alert";
+import './Post.scss';
 import * as moment from 'moment'
-import {getRequest, deleteRequest, putRequest} from "../axios-wrapper";
+import {getRequest, deleteRequest, putRequest, postRequest, tmdbGetRequest} from "../axios-wrapper";
 import {useNavigate} from "react-router-dom";
 import {top250} from "../imdb/top250";
 import DeleteDialog from "./DeleteDialog";
 import {admins} from "../constant/admins";
 import {hasPermissions} from "../util/axiosUtils";
+import {tmdbImageLink} from "../constant/constants";
+import {parseTime} from "../util/BaseUtils";
 
 export default function Post(props){
     const [film, setFilm] = useState(null);
@@ -18,29 +18,42 @@ export default function Post(props){
     const [showWriteComment, setShowWriteComment] = useState(false);
     const [likeCount, setLikeCount] = useState(props.likes);
     const [deleteDialog, setDeleteDialog] = useState(false);
+    const [userLiked, setUserLiked] = useState(false);
 
     const navigate = useNavigate();
 
-    const addLike = () => {
+    const likeAmountChange = async (amount) => {
         const data = {
             filmId: props.filmId,
             userId: props.userId,
             message: props.message,
-            likes: props.likes + 1,
+            likes: props.likes + amount,
             date: props.date
         }
 
-        editPost(props.id, data)
-            .then(response => {
-                setLikeCount(likeCount + 1);
-            }).catch(error => {
-            Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
-        });
+        await putRequest(`/api/posts/${props.id}`, data)
+        setLikeCount(likeCount + amount);
+    }
+
+    const addLike = async () => {
+        if(!userLiked) {
+            const likeData = {
+                id: `F${props.filmId}U${props.userId}`,
+                filmId: props.filmId,
+                userId: props.userId,
+            }
+            await postRequest('/api/likes/add', likeData);
+            console.log('here');
+            await likeAmountChange(1);
+        } else {
+            await deleteRequest(`/api/likes/F${props.filmId}U${props.userId}`);
+            await likeAmountChange(-1);
+        }
+        setUserLiked(!userLiked);
     }
 
     const handleDeleteDialogClose = (value) => {
         setDeleteDialog(false);
-
         if(value){
             deleteRequest(`/api/posts/${props.id}`);
             setFilm(null);
@@ -49,15 +62,15 @@ export default function Post(props){
 
     useEffect(() => {
         const getData = async () => {
-            const filmsData = top250.items;
-            const thisFilm = filmsData.filter(f => {
-                return f.id === props.filmId;
-            })
-            setFilm(thisFilm[0]);
+            const tmdbData = await tmdbGetRequest(`movie/${props.filmId}?`);
+            setFilm(tmdbData.data);
+            console.log(tmdbData.data);
             const userData = await getRequest(`/api/user/id/${props.userId}`);
             setUser(userData.data);
             const currUserData = await getRequest(`/api/user/me`);
             setCurrUser(currUserData.data);
+            const userLikedData = await getRequest(`/api/likes/F${props.filmId}U${props.userId}`);
+            setUserLiked(userLikedData?.data);
         }
 
         getData();
@@ -80,18 +93,18 @@ export default function Post(props){
             }
             <div className={'post-card-header'}>
                 <div className={'post-card-name'}>{user.name}</div>
-                <div className={'post-card-date'}>{props.date}</div>
+                <div className={'post-card-date'}>{parseTime(props.date)}</div>
             </div>
             <div className={'post-card-film-section'} onClick={(e) => navigate(`/film/${props.filmId}`)}>
-                <img src={film.image ? film.image : filmPlaceholder} alt={film.fullTitle} className={'post-card-image'}/>
-                <div className={'post-card-film-name'}>{film.fullTitle}</div>
+                <img src={tmdbImageLink(film?.poster_path) || filmPlaceholder} alt={film?.title} className={'post-card-image'}/>
+                <div className={'post-card-film-name'}>{film?.title}</div>
             </div>
             <div className={'post-card-message'}>{props.message}</div>
             <div className={'post-card-statistics-section'}>
                 <div className={'post-card-likes'}>{likeCount} Likes</div>
             </div>
             <div className={'post-card-buttons-section'}>
-                <button className={'post-card-button'} onClick={addLike}>Like</button>
+                <button className={`post-card-button ${userLiked && 'pressed'}`} onClick={addLike}>Like</button>
                 <button className={'post-card-button'} onClick={() => setShowWriteComment(!showWriteComment)}>Comment</button>
                 <button className={'post-card-button'}>Share</button>
             </div>
@@ -115,12 +128,7 @@ function PostCommentSection(props) {
     }
 
     useEffect(() => {
-        getCommentsByPostId(props.postId)
-            .then(response => {
-                setComments(response);
-            }).catch(error => {
-            setComments(null);
-        });
+        getRequest(`/api/comments/post/${props.postId}`).then(res => setComments(res.data))
     }, []);
 
     const addComment = (e) => {
@@ -137,13 +145,11 @@ function PostCommentSection(props) {
                     date: NewDate,
                 }
 
-                postComment(data)
+                postRequest('/api/comments/add', data)
                     .then(response => {
-                        setComments(comments => [...comments, response]);
+                        setComments(comments => [...comments, response.data]);
                         setWrittenComment('');
-                    }).catch(error => {
-                    Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
-                });
+                    })
             }
         }
     }
@@ -202,7 +208,6 @@ function Comment(props) {
 
     useEffect(() => {
         const getData = async () => {
-            console.log(props.userId);
             const userData = await getRequest(`/api/user/id/${props.userId}`);
             setUser(userData.data);
             const perm = await hasPermissions(props.userId);
@@ -226,7 +231,7 @@ function Comment(props) {
                         <div className={'comment-delete'} onClick={() => setEditComment(!editComment)}>{editComment ? 'CLOSE EDIT' : 'EDIT'}</div>
                     </>
                 }
-                <div className={'comment-date'}>{props.date}</div>
+                <div className={'comment-date'}>{parseTime(props.date)}</div>
             </div>
             <div className={'comment-message'}>
                 {editComment ?

@@ -1,5 +1,6 @@
 import {deleteRequest, getRequest, postRequest} from "../axios-wrapper";
 import {admins} from '../constant/admins';
+import {ACCESS_TOKEN} from "../constant/constants";
 
 export const isUserFriend = async (id) => {
     const meData = await getRequest(`/api/user/me`);
@@ -18,13 +19,11 @@ export const isUserFriend = async (id) => {
 
 export const addFriendForUser = async (id) => {
     const meData = await getRequest(`/api/user/me`);
-
     const o = {
         followingId: meData.data.id,
         followedId: id
     }
     const friend = await postRequest(`/api/friends/add`, o);
-
     return {...friend, isFriend: true}
 }
 
@@ -47,9 +46,13 @@ export const removeUser = async (id) => {
     friends.data.map(f => {
         deleteRequest(`/api/friends/${f.id}`);
     })
-    const films = await getRequest(`/api/films/${id}`)
+    const films = await getRequest(`/api/films/film/${id}`)
     films.data.map(fi => {
-        deleteRequest(`/api/films/${fi.id}`);
+        deleteRequest(`/api/films/film/${fi.id}`);
     })
     await deleteRequest(`/api/user/${id}`);
+}
+
+export function isLoggedIn() {
+    return !!localStorage.getItem(ACCESS_TOKEN);
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './FriendsSidebar.css';
+import './FriendsSidebar.scss';
 import {getRequest} from "../axios-wrapper";
 
 export default function FriendsSidebar(props) {

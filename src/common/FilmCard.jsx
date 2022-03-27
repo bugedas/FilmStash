@@ -1,15 +1,14 @@
 import React from 'react';
-import filmPlaceholder from '../image/film-placeholder.png';
-import './FilmCard.css';
+import './FilmCard.scss';
 import {useNavigate} from "react-router-dom";
+import {filmTvLink} from "../util/BaseUtils";
 
 export default function FilmCard(props) {
     const navigate = useNavigate();
     return (
-        <div className={'film-card'} onClick={(e) => navigate(`/film/${props.filmId}`)}>
-            <img src={props.image ? props.image : '../Images/film-placeholder.png'} alt={props.fullTitle} className={'film-card-image'}/>
-            {/*<img src={filmPlaceholder} width={'200px'} height={'120px'} alt={props.fullTitle} className={'film-card-image'}/>*/}
-            <h1 className={'film-card-title'}>{props.fullTitle}</h1>
+        <div className={'film-card'} onClick={(e) => navigate(`/${filmTvLink(props.filmType)}/${props.filmId}`)}>
+            <img src={props.image ? props.image : '../Images/film-placeholder.png'} alt={props.title} className={'film-card-image'}/>
+            <h1 className={'film-card-title'}>{props.title}</h1>
         </div>
     )
 }

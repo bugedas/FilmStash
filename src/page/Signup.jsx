@@ -1,29 +1,32 @@
 import React, {useState} from 'react';
 import fbLogo from '../image/fb-logo.png';
 import googleLogo from '../image/google-logo.png';
-import githubLogo from '../image/github-logo.png';
-import {FACEBOOK_AUTH_URL, GITHUB_AUTH_URL, GOOGLE_AUTH_URL} from "../constant/constants";
-import {isLoggedIn, signup} from "../util/APIUtils";
-import Alert from "react-s-alert";
+import {FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL} from "../constant/constants";
+import Alert from '@mui/material/Alert';
 import { Navigate } from 'react-router-dom';
-import './Signup.css';
+import './Signup.scss';
+import {postPublicRequest} from "../axios-wrapper";
+import {isLoggedIn} from "../util/axiosUtils";
 
 export default function Signup() {
+
+    const [alertErr, setAlertErr] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
+
     if(isLoggedIn()) {
         return <Navigate to={"/"}/>;
     }
 
     return (
         <div className="signup-container">
-            <div className="signup-content">
-                <h1 className="signup-title">Signup with FilmStash</h1>
-                <SocialSignup />
-                <div className="or-separator">
-                    <span className="or-text">OR</span>
-                </div>
-                <SignupForm/>
-                <span className="login-link">Already have an account? <a href="/login">Login!</a></span>
+            <Alert className={`signup-alert ${!showAlert && 'hidden'}`} severity="error">{alertErr}</Alert>
+            <h1 className="signup-title">Signup with FilmStash</h1>
+            <SocialSignup />
+            <div className="signup-or-separator">
+                <span className="signup-or-text">OR</span>
             </div>
+            <SignupForm setAlertErr={setAlertErr} setShowAlert={setShowAlert}/>
+            <div>Already have an account? <a href="/login" className="signup-login-link">Login!</a></div>
         </div>
     );
 }
@@ -31,56 +34,69 @@ export default function Signup() {
 
 function SocialSignup() {
     return (
-        <div className="social-signup">
-            <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
-                <img src={googleLogo} alt="Google" /> Sign up with Google</a>
-            <a className="btn btn-block social-btn facebook" href={FACEBOOK_AUTH_URL}>
-                <img src={fbLogo} alt="Facebook" /> Sign up with Facebook</a>
-            <a className="btn btn-block social-btn github" href={GITHUB_AUTH_URL}>
-                <img src={githubLogo} alt="Github" /> Sign up with Github</a>
+        <div className="signup-social">
+            <a className="signup-button" href={GOOGLE_AUTH_URL}>
+                <img src={googleLogo} alt="Google" /><span>Sign up with Google</span></a>
+            <a className="signup-button" href={FACEBOOK_AUTH_URL}>
+                <img src={fbLogo} alt="Facebook" /> <span>Sign up with Facebook</span></a>
         </div>
     );
 }
 
-function SignupForm() {
-
+function SignupForm(props) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = () => {
-        const signUpRequest = Object.assign({}, {name: name, email: email, password: password});
+    const getError = (errMsg) => {
+        if(name.length === 0 || email.length === 0 || password.length === 0) {
+            return "Please fill all fields!";
+        }
+        else if(!email.includes('@')) {
+            return "Please enter a valid email address!"
+        }
+        else if(password.length < 6) {
+            return "Please use a stronger password!"
+        }
+        else {
+            return errMsg;
+        }
+    }
 
-        signup(signUpRequest)
-            .then(response => {
-                Alert.success("You're successfully registered. Please login to continue!");
-                return <Navigate to="/login" />
-            }).catch(error => {
-            Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
-        });
+    const handleSubmit = () => {
+        const signUpRequest = {name: name, email: email, password: password};
+        if(getError('') === '') {
+            postPublicRequest('/auth/signup', signUpRequest)
+                .then(response => {
+                    return <Navigate to="/login"/>;
+                }).catch(error => {
+                    props.setAlertErr(getError(error.message));
+                    props.setShowAlert(true);
+                    setTimeout(() => {
+                        props.setShowAlert(false);
+                    }, 3000);
+            });
+        } else {
+            props.setAlertErr(getError('Ooops! Something is wrong!'));
+            props.setShowAlert(true);
+            setTimeout(() => {
+                props.setShowAlert(false);
+            }, 3000);
+        }
     }
 
     return (
-        <div>
-            <div className="form-item">
-                <input type="text" name="name"
-                       className="form-control" placeholder="Name"
-                       value={name} onChange={(e) => setName(e.target.value)} required/>
-            </div>
-            <div className="form-item">
-                <input type="email" name="email"
-                       className="form-control" placeholder="Email"
-                       value={email} onChange={(e) => setEmail(e.target.value)} required/>
-            </div>
-            <div className="form-item">
-                <input type="password" name="password"
-                       className="form-control" placeholder="Password"
-                       value={password} onChange={(e) => setPassword(e.target.value)} required/>
-            </div>
-            <div className="form-item">
-                <button onClick={handleSubmit} className="btn btn-block btn-primary" >Sign Up</button>
-            </div>
+        <div className={'signup-form'}>
+            <input type="text" name="name"
+                   className="signup-form-input" placeholder="Name"
+                   value={name} onChange={(e) => setName(e.target.value)} required/>
+            <input type="email" name="email"
+                   className="signup-form-input" placeholder="Email"
+                   value={email} onChange={(e) => setEmail(e.target.value)} required/>
+            <input type="password" name="password"
+                   className="signup-form-input" placeholder="Password"
+                   value={password} onChange={(e) => setPassword(e.target.value)} required/>
+            <button onClick={handleSubmit} className="signup-form-button" >Sign Up</button>
         </div>
-
     );
 }

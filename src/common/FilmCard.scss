@@ -1,0 +1,29 @@
+@use '../constant/variables' as v;
+
+.film-card {
+    width: 200px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+
+.film-card:hover {
+    //background-color: #383434;
+    //box-shadow: 0 0 20px 5px #383434;
+    transform: scale(1.08);
+}
+
+.film-card-image{
+    width: 100%;
+}
+
+.film-card-title {
+    font-family: v.$font_lemon;
+    font-size: 15px;
+    color: v.$white_dark;
+    white-space: normal;
+}
