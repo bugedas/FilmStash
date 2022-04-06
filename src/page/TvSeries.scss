@@ -31,7 +31,6 @@
 }
 
 
-
 .tv-page-share-button, .tv-page-post-button {
   width: 150px;
   background-color: transparent;
@@ -47,11 +46,15 @@
   margin: 20px 10px 0;
   display: inline-block;
   text-decoration: none;
+  cursor: pointer;
+
+  &.watching {
+    border-color: v.$red;
+  }
 }
 
-.tv-page-share-button:hover {
+.tv-page-share-button:hover, .tv-page-post-button:hover {
   background-color: #383838;
-  cursor: pointer;
 }
 
 .tv-page-share-input {
@@ -144,8 +147,8 @@
 .tv-page-bottom-cast-person-image {
   object-fit: cover;
   object-position: top;
-  width:100px;
-  height:100px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
 }
 

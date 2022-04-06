@@ -13,53 +13,49 @@ import AppFooter from "./common/AppFooter";
 import AppHeaderNew from "./common/AppHeaderNew";
 import TvSeries from "./page/TvSeries";
 import WatchingNow from "./page/WatchingNow";
+import {UserContext} from './contexts/UserContext';
+import {useEffect, useMemo, useState} from "react";
+import {getRequest} from "./axios-wrapper";
+import {ACCESS_TOKEN} from "./constant/constants";
 
 function App() {
+    const [user, setUser] = useState(null);
+    useEffect(async () => {
+        const currUserData = await getRequest(`/api/user/me`);
+        if (currUserData?.error?.response?.status === 401) {
+            localStorage.removeItem(ACCESS_TOKEN);
+            window.location.reload(false);
+        } else {
+            setUser(currUserData.data);
+        }
+    }, []);
 
 
-  // <script>
-  //   window.fbAsyncInit = function() {
-  //   FB.init({
-  //     appId      : '{your-app-id}',
-  //     cookie     : true,
-  //     xfbml      : true,
-  //     version    : '{api-version}'
-  //   });
-  //
-  //   FB.AppEvents.logPageView();
-  //
-  // };
-  //
-  //   (function(d, s, id){
-  //   var js, fjs = d.getElementsByTagName(s)[0];
-  //   if (d.getElementById(id)) {return;}
-  //   js = d.createElement(s); js.id = id;
-  //   js.src = "https://connect.facebook.net/en_US/sdk.js";
-  //   fjs.parentNode.insertBefore(js, fjs);
-  // }(document, 'script', 'facebook-jssdk'));
-  // </script>
+    const providerUser = useMemo(() => ({user, setUser}), [user, setUser]);
 
-  return (
-      <div className="app">
-          <AppHeaderNew/>
-            <div className="app-body">
-              <Routes>
-                <Route exact path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login />}/>
-                <Route path="/signup" element={<Signup />}/>
-                <Route path="/profile" element={<Profile />}/>
-                <Route path="/film/:id" element={<Film />}/>
-                <Route path="/tv/:id" element={<TvSeries />}/>
-                <Route path="/user/:id" element={<User />}/>
-                <Route path="/watching-now" element={<WatchingNow />}/>
-                <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>}/>
-                <Route element={<NotFound/>}/>
-                <Route element={<HomeLoggedIn/>}/>
-              </Routes>
-            </div>
-            <AppFooter/>
-      </div>
-  );
+    return (
+        <div className="app">
+            <UserContext.Provider value={providerUser}>
+                <AppHeaderNew/>
+                <div className="app-body">
+                    <Routes>
+                        <Route exact path="/" element={<Home/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/signup" element={<Signup/>}/>
+                        <Route path="/profile" element={<Profile/>}/>
+                        <Route path="/film/:id" element={<Film/>}/>
+                        <Route path="/tv/:id" element={<TvSeries/>}/>
+                        <Route path="/user/:id" element={<User/>}/>
+                        <Route path="/watching-now" element={<WatchingNow/>}/>
+                        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>}/>
+                        <Route element={<NotFound/>}/>
+                        <Route element={<HomeLoggedIn/>}/>
+                    </Routes>
+                </div>
+                <AppFooter/>
+            </UserContext.Provider>
+        </div>
+    );
 }
 
 export default App;

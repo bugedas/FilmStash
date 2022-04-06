@@ -1,165 +1,171 @@
 @use '../constant/variables' as v;
 
 .film-page {
-    margin: 0 auto;
-    max-width: 800px;
+  margin: 0 auto;
+  max-width: 800px;
 }
 
 .film-page-header {
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 38px;
-    color: v.$red;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 38px;
+  color: v.$red;
 }
 
 .film-page-data {
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 15px;
-    color: v.$white_dark;
-    padding-bottom: 10px;
-    padding-top: 10px;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 15px;
+  color: v.$white_dark;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 .film-page-imdb {
-    padding-left: 30px;
+  padding-left: 30px;
 }
 
 .film-page-crew {
-    font-size: 15px;
-    color: v.$white_dark;
-    padding-bottom: 10px;
-    padding-top: 10px;
+  font-size: 15px;
+  color: v.$white_dark;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
-
 
 
 .film-page-share-button, .film-page-post-button {
-    width: 150px;
-    background-color: transparent;
-    color: v.$white_dark;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 15px;
-    transition: all 0.1s;
-    border-radius: 10px;
-    border: 3px solid #383838;
-    text-align: center;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    display: inline-block;
-    margin: 20px 10px 0;
+  width: 150px;
+  background-color: transparent;
+  color: v.$white_dark;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 15px;
+  transition: all 0.1s;
+  border-radius: 10px;
+  border: 3px solid #383838;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: inline-block;
+  margin: 20px 10px 0;
+  cursor: pointer;
 }
 
-.film-page-share-button:hover {
-    background-color: #383838;
-    cursor: pointer;
+.film-page-share-button:hover, .film-page-post-button:hover {
+  background-color: #383838;
 }
 
 .film-page-share-input {
-    margin-top: 10px;
-    margin-bottom: 5px;
-    height: 80px;
-    width: 100%;
-    background-color: transparent;
-    border-radius: 10px;
-    border: 3px solid #383838;
-    overflow: hidden;
-    resize: none;
-    color: v.$white_dark;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  height: 80px;
+  width: 100%;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 3px solid #383838;
+  overflow: hidden;
+  resize: none;
+  color: v.$white_dark;
 
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 }
 
 .film-page-image {
-    max-width: 100%;
-    max-height: 450px;
+  max-width: 100%;
+  max-height: 450px;
 }
 
 .film-page-add-to-list {
-    padding-left: 15px;
-    cursor: pointer;
-    text-align: right;
-    display: inline-block;
+  padding-left: 15px;
+  cursor: pointer;
+  text-align: right;
+  display: inline-block;
 }
 
 .film-page-about {
-    text-align: left;
-    font-family: v.$font_sans;
+  text-align: left;
+  font-family: v.$font_sans;
 }
 
 .film-page-bottom-row {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .film-page-about-content {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .film-page-about-header {
-    color: v.$grey_light_4;
-    margin-top: 30px;
+  color: v.$grey_light_4;
+  margin-top: 30px;
 }
 
 .film-page-bottom-image {
-    display: inline;
-    width: 170px;
-    margin: 0 15px;
-    cursor: pointer;
+  display: inline;
+  width: 170px;
+  margin: 0 15px;
+  cursor: pointer;
 }
 
 .film-page-bottom-image-container {
-    height: 100px;
-    display: flex;
-    flex-direction: row;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
 }
 
 .film-page-bottom-image-arrow {
-    margin: auto;
+  margin: auto;
 
-    &.hidden {
-        display: none;
-    }
+  &.hidden {
+    display: none;
+  }
 }
 
 .film-page-bottom-arrow-container {
-    cursor: pointer;
-    width: 24px;
-    margin: auto;
+  cursor: pointer;
+  width: 24px;
+  margin: auto;
 }
 
 .film-page-bottom-cast-container {
-    margin-top: 30px;
-    display: flex;
-    //flex-direction: row;
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .film-page-bottom-cast-person {
-    font-family: v.$font_sans;
-    margin: 0 10px;
-    width: 200px;
+  font-family: v.$font_sans;
+  margin: 10px;
+  width: 140px;
+  display: block;
+  text-decoration: none;
 }
 
 .film-page-bottom-cast-person-image {
-    object-fit: cover;
-    object-position: top;
-    width:100px;
-    height:100px;
-    border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.film-page-bottom-cast-person-name {
+  color: v.$white_dark;
 }
 
 .film-page-bottom-cast-person-character {
-    color: v.$grey_light_4;
+  color: v.$grey_light_4;
 }
 
 .film-page-cast-header {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .film-page-watch-provider-image {
-    width: 80px;
-    margin: 15px;
+  width: 80px;
+  margin: 15px;
 }
 
 .film-page-watch-header {
-    margin-top: 30px;
+  margin-top: 30px;
 }

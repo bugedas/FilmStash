@@ -11,3 +11,5 @@ export const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect
 
 export const defaultImdbImg = 'https://ia.media-imdb.com/images/M/MV5BMTczNjM0NDY0Ml5BMl5BcG5nXkFtZTgwMTk1MzQ2OTE@._V1_.png';
 export const tmdbImageLink = (url, size) => `https://image.tmdb.org/t/p/${size ? size : 'original'}${url}`;
+
+export const LIST_TYPES = [{value: 'watch_later', label: 'Watch later'}, {value: 'watched', label: 'Watched'}]

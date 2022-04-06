@@ -1,70 +1,90 @@
 .user-container {
-    padding-top: 30px;
+  padding-top: 30px;
 }
 
 .user-info {
-    text-align: center;
+  text-align: center;
 }
 
 .user-info .user-avatar img {
-    border-radius: 50%;
-    width: 150px;
+  border-radius: 50%;
+  width: 150px;
 }
 
 .user-info .user-name {
-    font-weight: 500;
-    font-size: 18px;
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .user-info .user-email {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .user-text-avatar {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-    vertical-align: middle;
-    text-align: center;
-    border-radius: 50%;
-    background: #46b5e5;
-    background: linear-gradient(45deg,#46b5e5 1%,#1e88e5 64%,#40baf5 97%);
-    background-image: -ms-linear-gradient(45deg,#46b5e5 1%,#1e88e5 64%,#40baf5 97%);
-    background-image: -moz-linear-gradient(45deg,#46b5e5 1%,#1e88e5 64%,#40baf5 97%);
-    background-image: -o-linear-gradient(45deg,#46b5e5 1%,#1e88e5 64%,#40baf5 97%);
-    background-image: -webkit-linear-gradient(45deg,#46b5e5 1%,#1e88e5 64%,#40baf5 97%);
-    background-image: linear-gradient(45deg,#46b5e5 1%,#1e88e5 64%,#40baf5 97%);
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  border-radius: 50%;
+  background: #46b5e5;
+  background: linear-gradient(45deg, #46b5e5 1%, #1e88e5 64%, #40baf5 97%);
+  background-image: -ms-linear-gradient(45deg, #46b5e5 1%, #1e88e5 64%, #40baf5 97%);
+  background-image: -moz-linear-gradient(45deg, #46b5e5 1%, #1e88e5 64%, #40baf5 97%);
+  background-image: -o-linear-gradient(45deg, #46b5e5 1%, #1e88e5 64%, #40baf5 97%);
+  background-image: -webkit-linear-gradient(45deg, #46b5e5 1%, #1e88e5 64%, #40baf5 97%);
+  background-image: linear-gradient(45deg, #46b5e5 1%, #1e88e5 64%, #40baf5 97%);
 
-    span {
-        line-height: 200px;
-        color: #fff;
-        font-size: 3em;
-    }
+  span {
+    line-height: 200px;
+    color: #fff;
+    font-size: 3em;
+  }
 }
 
 .user-posts-section {
-    max-width: 600px;
-    margin: 0 auto;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .user-interactions-section {
-    width: 200px;
-    margin: 0 auto;
+  width: 200px;
+  margin: 0 auto;
 }
 
 .user-interact-friend-button {
-    width: 100%;
-    cursor: pointer;
-    height: 50px;
-    background-color: transparent;
-    border-radius: 10px;
-    border: 3px solid #2e2e2e;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 18px;
-    color: #EE3232;
-    transition: background-color 0.1s;
+  width: 100%;
+  cursor: pointer;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 3px solid #2e2e2e;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 18px;
+  color: #EE3232;
+  transition: background-color 0.1s;
 }
 
 .user-interact-friend-button:hover {
-    background-color: #2e2e2e;
+  background-color: #2e2e2e;
+}
+
+.user-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.user-container {
+  flex: 1 1;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+.user-section {
+  display: block;
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
 }

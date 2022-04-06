@@ -1,7 +1,7 @@
 import './AppHeaderNew.scss';
 import logo from "../image/FilmstashLogo.png";
 import defaultUser from "../image/default-user.png";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {isLoggedIn} from "../util/axiosUtils";
 import {ACCESS_TOKEN, defaultImdbImg, tmdbImageLink} from "../constant/constants";
 import {getRequest, tmdbGetRequest} from "../axios-wrapper";
@@ -10,14 +10,24 @@ import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import {filmTvLink} from "../util/BaseUtils";
+import {UserContext} from "../contexts/UserContext";
+import {FilmListDialog, FriendsDialog} from "./Dialogs";
 
 export default function AppHeaderNew() {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [showMobileSearch, setShowMobileSearch] = useState(false);
+    const [showFollowing, setShowFollowing] = useState(false);
+    const [listDialog, setListDialog] = useState(false);
+    const {user} = useContext(UserContext);
+    const accessTk = localStorage.getItem(ACCESS_TOKEN);
 
     const handleLogout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
         window.location.reload(false);
+    }
+
+    if (!user && accessTk) {
+        return null;
     }
 
     return (
@@ -45,8 +55,12 @@ export default function AppHeaderNew() {
                         <CloseIcon className={'header-mobile-close'} onClick={() => setShowMobileMenu(false)}/>}
                         <a href="/watching-now">Watching Now</a>
                         <a href="/profile">Profile</a>
+                        <a className="menu-item-only-mobile" onClick={() => setShowFollowing(true)}>Following</a>
+                        <a className="menu-item-only-mobile" onClick={() => setListDialog(true)}>My Lists</a>
                         <a onClick={handleLogout}>Logout</a>
                     </div>
+                    <FriendsDialog userId={user.id} open={showFollowing} onClose={setShowFollowing}/>
+                    <FilmListDialog userId={user.id} open={listDialog} onClose={setListDialog}/>
                 </>
             ) : (
                 <>
@@ -82,7 +96,7 @@ function Search(props) {
                 const usersData = await getRequest(`/api/user/${search}`);
                 setUsers(usersData?.data);
             }
-        }, 500)
+        }, 300)
 
         return () => clearTimeout(delayDebounceFn);
     }, [search]);
@@ -92,28 +106,22 @@ function Search(props) {
             {props.showMobileSearch &&
             <CloseIcon className={'header-mobile-close'} onClick={() => props.setShowMobileSearch(false)}/>}
             <div className={`header-search-container`} ref={ref}>
-                <textarea className={'header-search-input'} rows={1} value={search}
-                          onChange={(e) => setSearch(e.target.value)}
-                          placeholder={'Search users, films or actors...'}
-                          onClick={() => setIsComponentVisible(true)}
+                <input className={'header-search-input'} rows={1} value={search}
+                       onChange={(e) => setSearch(e.target.value)}
+                       placeholder={'Search users, films or actors...'}
+                       onClick={() => setIsComponentVisible(true)}
                 />
                 {filmSuggestions && isComponentVisible && search &&
                 <div className={'header-search-results-dropdown'}>
                     {filmSuggestions?.map(result => {
                         return (
-                                <SearchResult result={result}/>
+                            <SearchResult result={result}/>
                         )
                     })}
-                    { users?.length > 0 && <div className={'hsr-users-title'}>Users</div> }
+                    {users?.length > 0 && <div className={'hsr-users-title'}>Users</div>}
                     {users?.slice(0, 3)?.map(result => {
                         return (
-                            <a href={`/user/${result.id}`} className={'header-search-result'} key={result.id}>
-                                <img className={'hsr-image'} src={result?.imageUrl || defaultUser} alt={`${result.l} image`}/>
-                                <div className={'hsr-info'}>
-                                    <div className={'hsr-title'}>{result.name}</div>
-                                    <div className={'hsr-year'}>{result.email}</div>
-                                </div>
-                            </a>
+                            <UserResult userId={result.followedId} result={result}/>
                         )
                     })}
                 </div>
@@ -123,18 +131,15 @@ function Search(props) {
     )
 }
 
-function SearchResult({result}) {
+export function SearchResult({result}) {
     const [link, setLink] = useState('');
 
     useEffect(() => {
         const getData = async () => {
-            if(result.media_type === 'person'){
+            if (result.media_type === 'person') {
                 const person = await tmdbGetRequest(`person/${result.id}?`);
-                console.log(person);
                 setLink(`https://www.imdb.com/name/${person.data.imdb_id}`);
-            }
-            else{
-                console.log(result);
+            } else {
                 setLink(`/${filmTvLink(result.media_type)}/${result.id}`);
             }
         }
@@ -144,10 +149,10 @@ function SearchResult({result}) {
     }, []);
 
     const resultImage = (result) => {
-        if(result.poster_path) {
+        if (result.poster_path) {
             return tmdbImageLink(result?.poster_path);
         }
-        if(result.profile_path) {
+        if (result.profile_path) {
             return tmdbImageLink(result?.profile_path);
         }
         return defaultImdbImg;
@@ -159,6 +164,34 @@ function SearchResult({result}) {
             <div className={'hsr-info'}>
                 <div className={'hsr-title'}>{result.name || result.title}</div>
                 <div className={'hsr-type'}>{`${result.media_type[0].toUpperCase()}${result.media_type.slice(1)}`}</div>
+            </div>
+        </a>
+    )
+}
+
+export function UserResult({userId, result}) {
+    const [userData, setUserData] = useState(null);
+
+    useEffect(async () => {
+        if (!result) {
+            const {data} = await getRequest(`/api/user/id/${userId}`);
+            setUserData(data);
+        } else {
+            setUserData(result);
+        }
+    }, []);
+
+    if (!userData) {
+        return null;
+    }
+
+    return (
+        <a href={`/user/${userData.id}`} className={'header-search-result'}>
+            <img className={'hsr-image'} src={userData?.imageUrl || defaultUser}
+                 alt={`${userData.name} image`}/>
+            <div className={'hsr-info'}>
+                <div className={'hsr-title'}>{userData.name}</div>
+                <div className={'hsr-year'}>{userData.email}</div>
             </div>
         </a>
     )

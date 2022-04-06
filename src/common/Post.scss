@@ -1,192 +1,216 @@
 @use '../constant/variables' as v;
 
 .post-card {
-    border: 1px solid black;
-    background-color: #333333;
-    padding-left: 10px;
-    padding-right: 10px;
-    box-shadow: 0 0 20px black;
-    margin-bottom: 50px;
+  border: 1px solid black;
+  background-color: #333333;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 0 0 20px black;
+  margin-bottom: 50px;
 }
 
 .post-card-header {
-    padding: 20px 0;
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 10px;
+  padding: 20px 0;
+  color: #EFEDED;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 10px;
 }
 
 .post-card-name {
-    display: inline-block;
+  display: inline-block;
+  float: left;
+  color: v.$red;
+  transition: text-decoration 0.2s ease;
+  text-decoration: underline solid transparent;
+  font-size: 12px;
+  margin-left: 10px;
+
+  &:hover {
+    text-decoration: underline solid v.$red;
+  }
 }
 
 .post-card-date {
-    float: right;
-    display: inline-block;
+  float: right;
+  display: inline-block;
 }
 
 .post-card-buttons-section {
-    display: flex;
-    align-content: space-between;
-    justify-content: center;
-    /*gap: 40px;*/
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-top: 3px solid #2e2e2e;
-    border-bottom: 3px solid #2e2e2e;
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  /*gap: 40px;*/
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 3px solid #2e2e2e;
+  border-bottom: 3px solid #2e2e2e;
 }
 
 .post-card-button {
-    display: inline-block;
-    max-width: 150px;
-    width: 100%;
-    height: 30px;
-    background-color: transparent;
-    border: none;
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 15px;
-    transition: all 0.1s;
+  display: inline-block;
+  max-width: 150px;
+  width: 100%;
+  height: 30px;
+  background-color: transparent;
+  border: none;
+  color: #EFEDED;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 15px;
+  transition: all 0.1s;
 
-    &.pressed {
-        background-color: v.$grey_light_2;
-        color: v.$red;
-        border: 2px solid v.$grey_light_3;
-        border-radius: 5px;
-    }
+  &.pressed {
+    background-color: v.$grey_light_2;
+    color: v.$red;
+    border: 2px solid v.$grey_light_3;
+    border-radius: 5px;
+  }
 }
 
 .post-card-button:hover {
-    background-color: #383838;
-    cursor: pointer;
+  background-color: #383838;
+  cursor: pointer;
 }
 
 .post-card-likes {
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 15px;
+  color: #EFEDED;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 15px;
 }
 
 .post-card-statistics-section {
-    padding: 10px 0;
-    border-top: 3px solid #2e2e2e;
+  padding: 10px 0;
+  border-top: 3px solid #2e2e2e;
 }
 
 .post-card-film-name {
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 18px;
-    color: #EE3232;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 18px;
+  color: #EE3232;
 }
 
 .post-card-message {
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 12px;
-    padding-top: 5px;
-    padding-bottom: 15px;
+  color: #EFEDED;
+  font-family: v.$font_sans;
+  font-size: 14px;
+  padding-top: 5px;
+  padding-bottom: 15px;
+  white-space: break-spaces;
+  text-align: left;
+  margin: 30px;
 }
 
 .post-comment-section {
-    margin: 20px;
+  margin: 20px;
 }
 
 .comment {
-    margin-bottom: 20px;
-    border-radius: 15px;
-    border: 3px solid #2e2e2e;
-    padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  border: 3px solid #2e2e2e;
+  padding: 10px;
 }
 
 .comment-header {
-    padding: 0 0 10px 0;
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 10px;
+  padding: 0 0 10px 0;
+  color: #EFEDED;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 10px;
+  height: 10px;
 }
 
 .comment-name {
-    display: inline-block;
+  display: inline-block;
+  float: left;
 }
 
 .comment-date {
-    float: right;
-    display: inline-block;
+  float: right;
+  display: inline-block;
 }
 
 .comment-delete {
-    float: right;
-    display: inline-block;
-    font-family: "Lemon-Milk-Light", serif;
-    font-weight: bold;
-    color: #EE3232;
-    padding-left: 10px;
-    cursor: pointer;
+  float: right;
+  display: inline-block;
+  font-family: "Lemon-Milk-Light", serif;
+  font-weight: bold;
+  color: #EE3232;
+  padding-left: 10px;
+  cursor: pointer;
 }
 
 .comment-message {
-    border-top: 3px solid #2e2e2e;
-    padding-top: 10px;
-    color: #EFEDED;
-    font-size: 10px;
+  border-top: 3px solid #2e2e2e;
+  padding-top: 10px;
+  color: #EFEDED;
+  font-size: 12px;
+  text-align: left;
+  font-family: v.$font_sans;
+  white-space: break-spaces;
 }
 
 .comment-input {
-    height: 60px;
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    overflow: hidden;
-    resize: none;
-    color: #EFEDED;
+  height: 60px;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
+  resize: none;
+  color: #EFEDED;
 }
 
 .comment-input:focus {
-    outline: none;
+  outline: none;
 }
 
 .no-display {
-    display: none;
+  display: none;
 }
 
 .show-more-comments {
-    text-align: right;
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 10px;
-    cursor: pointer;
+  text-align: right;
+  color: #EFEDED;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 10px;
+  cursor: pointer;
 }
 
 .collapse-comments {
-    text-align: right;
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 10px;
-    cursor: pointer;
-    padding-bottom: 20px;
+  text-align: right;
+  color: #EFEDED;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 10px;
+  cursor: pointer;
+  padding-bottom: 20px;
 }
 
-.post-card-film-section{
-    cursor: pointer;
-    transition: all 0.2s;
+.post-card-film-section {
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .post-card-film-section:hover {
-    background-color: #3f3f3f;
-    box-shadow: 0 0 20px 5px #3f3f3f;
+  background-color: #3f3f3f;
+  box-shadow: 0 0 20px 5px #3f3f3f;
 }
 
 .post-card-delete-button {
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 12px;
-    color: #EE3232;
-    float: right;
-    cursor: pointer;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 12px;
+  color: #EE3232;
+  //float: right;
+  display: inline-block;
 }
 
 .post-card-delete-button:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .post-card-image {
-    max-height: 300px;
+  max-height: 300px;
+}
+
+.post-card-message-more {
+  color: v.$red;
+  padding-left: 20px;
+  cursor: pointer;
 }

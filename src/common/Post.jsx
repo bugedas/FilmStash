@@ -1,24 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import filmPlaceholder from "../image/film-placeholder.png";
 import './Post.scss';
 import * as moment from 'moment'
-import {getRequest, deleteRequest, putRequest, postRequest, tmdbGetRequest} from "../axios-wrapper";
+import {deleteRequest, getRequest, postRequest, putRequest, tmdbGetRequest} from "../axios-wrapper";
 import {useNavigate} from "react-router-dom";
-import {top250} from "../imdb/top250";
-import DeleteDialog from "./DeleteDialog";
+import {DeleteDialog} from "./Dialogs";
 import {admins} from "../constant/admins";
 import {hasPermissions} from "../util/axiosUtils";
 import {tmdbImageLink} from "../constant/constants";
-import {parseTime} from "../util/BaseUtils";
+import {filmTvLink, parseTime} from "../util/BaseUtils";
+import {UserContext} from "../contexts/UserContext";
+import {Tooltip} from "@mui/material";
+import Fab from "@mui/material/Fab";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Post(props){
+export default function Post(props) {
     const [film, setFilm] = useState(null);
     const [user, setUser] = useState(null);
-    const [currUser, setCurrUser] = useState(null);
+    const {user: currUser} = useContext(UserContext);
     const [showWriteComment, setShowWriteComment] = useState(false);
     const [likeCount, setLikeCount] = useState(props.likes);
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [userLiked, setUserLiked] = useState(false);
+    const [expandMessage, setExpandMessage] = useState(false);
 
     const navigate = useNavigate();
 
@@ -28,7 +32,8 @@ export default function Post(props){
             userId: props.userId,
             message: props.message,
             likes: props.likes + amount,
-            date: props.date
+            date: props.date,
+            type: props.type
         }
 
         await putRequest(`/api/posts/${props.id}`, data)
@@ -36,17 +41,16 @@ export default function Post(props){
     }
 
     const addLike = async () => {
-        if(!userLiked) {
+        if (!userLiked) {
             const likeData = {
-                id: `F${props.filmId}U${props.userId}`,
+                id: `${props.type}${props.filmId}U${props.userId}`,
                 filmId: props.filmId,
                 userId: props.userId,
             }
             await postRequest('/api/likes/add', likeData);
-            console.log('here');
             await likeAmountChange(1);
         } else {
-            await deleteRequest(`/api/likes/F${props.filmId}U${props.userId}`);
+            await deleteRequest(`/api/likes/${props.type}${props.filmId}U${props.userId}`);
             await likeAmountChange(-1);
         }
         setUserLiked(!userLiked);
@@ -54,7 +58,7 @@ export default function Post(props){
 
     const handleDeleteDialogClose = (value) => {
         setDeleteDialog(false);
-        if(value){
+        if (value) {
             deleteRequest(`/api/posts/${props.id}`);
             setFilm(null);
         }
@@ -62,53 +66,63 @@ export default function Post(props){
 
     useEffect(() => {
         const getData = async () => {
-            const tmdbData = await tmdbGetRequest(`movie/${props.filmId}?`);
+            const tmdbData = await tmdbGetRequest(`${props.type}/${props.filmId}?`);
             setFilm(tmdbData.data);
-            console.log(tmdbData.data);
             const userData = await getRequest(`/api/user/id/${props.userId}`);
             setUser(userData.data);
-            const currUserData = await getRequest(`/api/user/me`);
-            setCurrUser(currUserData.data);
-            const userLikedData = await getRequest(`/api/likes/F${props.filmId}U${props.userId}`);
+            const userLikedData = await getRequest(`/api/likes/${props.type}${props.filmId}U${props.userId}`);
             setUserLiked(userLikedData?.data);
         }
 
         getData();
     }, []);
 
-    if(film === null || user === null || currUser ===null){
+    if (film === null || user === null || currUser === null) {
         return null;
     }
 
     return (
         <div className={'post-card'}>
-            {(user.id === currUser.id || admins.includes(currUser.email)) &&
-                <>
-                    <div className={'post-card-delete-button'} onClick={() => setDeleteDialog(true)}>DELETE</div>
-                    <DeleteDialog
-                    open={deleteDialog}
-                    onClose={handleDeleteDialogClose}
-                    />
-                </>
-            }
             <div className={'post-card-header'}>
-                <div className={'post-card-name'}>{user.name}</div>
-                <div className={'post-card-date'}>{parseTime(props.date)}</div>
+                <a href={`/user/${user.id}`} className={'post-card-name'}>{user.name}</a>
+                <div className={'post-card-date'}>{parseTime(props.date)}
+                    {(user.id === currUser.id || admins.includes(currUser.email)) &&
+                    <>
+                        <div className={'post-card-delete-button'}>
+                            <Tooltip title="Delete">
+                                <Fab sx={{marginLeft: '10px'}}
+                                     size="small"
+                                     onClick={() => setDeleteDialog(true)}><DeleteIcon/>
+                                </Fab>
+                            </Tooltip></div>
+                        <DeleteDialog
+                            open={deleteDialog}
+                            onClose={handleDeleteDialogClose}
+                        />
+                    </>}
+                </div>
             </div>
-            <div className={'post-card-film-section'} onClick={(e) => navigate(`/film/${props.filmId}`)}>
-                <img src={tmdbImageLink(film?.poster_path) || filmPlaceholder} alt={film?.title} className={'post-card-image'}/>
+            <div className={'post-card-film-section'}
+                 onClick={(e) => navigate(`/${filmTvLink(props.type)}/${props.filmId}`)}>
+                <img src={tmdbImageLink(film?.poster_path) || filmPlaceholder} alt={film?.title}
+                     className={'post-card-image'}/>
                 <div className={'post-card-film-name'}>{film?.title}</div>
             </div>
-            <div className={'post-card-message'}>{props.message}</div>
+            <div
+                className={'post-card-message'}>{expandMessage ? props.message : props.message.slice(0, 300)}{!expandMessage && props.message.length > 300 &&
+            <>...<span className={'post-card-message-more'} onClick={() => setExpandMessage(true)}>Read more</span></>}
+            </div>
             <div className={'post-card-statistics-section'}>
                 <div className={'post-card-likes'}>{likeCount} Likes</div>
             </div>
             <div className={'post-card-buttons-section'}>
                 <button className={`post-card-button ${userLiked && 'pressed'}`} onClick={addLike}>Like</button>
-                <button className={'post-card-button'} onClick={() => setShowWriteComment(!showWriteComment)}>Comment</button>
+                <button className={'post-card-button'} onClick={() => setShowWriteComment(!showWriteComment)}>Comment
+                </button>
                 <button className={'post-card-button'}>Share</button>
             </div>
-            <PostCommentSection currentUserId={currUser.id} thisUserId={props.userId} showWriteComment={showWriteComment} postId={props.id}/>
+            <PostCommentSection currentUserId={currUser.id} thisUserId={props.userId}
+                                showWriteComment={showWriteComment} postId={props.id}/>
         </div>
     )
 }
@@ -124,7 +138,9 @@ function PostCommentSection(props) {
 
     const handleDeleteComment = (id) => {
         deleteRequest(`/api/comments/${id}`);
-        setComments(comments.filter(c => {return c.id !== id}));
+        setComments(comments.filter(c => {
+            return c.id !== id
+        }));
     }
 
     useEffect(() => {
@@ -132,9 +148,9 @@ function PostCommentSection(props) {
     }, []);
 
     const addComment = (e) => {
-        if(e.keyCode === 13){
+        if (e.keyCode === 13) {
             e.preventDefault();
-            if(writtenComment.length > 0){
+            if (writtenComment.length > 0) {
                 const yourDate = new Date()
                 const NewDate = moment(yourDate, 'YYYY-MM-DD')
                 const data = {
@@ -170,7 +186,7 @@ function PostCommentSection(props) {
                 return (<Comment handleDeleteComment={handleDeleteComment} key={comment.id} {...comment}/>);
             })}
             {comments && comments.length > showCommentsAmount &&
-                <div className={'show-more-comments'} onClick={moreComments}>Show more comments...</div>
+            <div className={'show-more-comments'} onClick={moreComments}>Show more comments...</div>
             }
         </div>
     )
@@ -217,7 +233,7 @@ function Comment(props) {
         getData();
     }, []);
 
-    if(user === null) {
+    if (user === null) {
         return null;
     }
 
@@ -226,20 +242,21 @@ function Comment(props) {
             <div className={'comment-header'}>
                 <div className={'comment-name'}>{user.name}</div>
                 {hasPerm &&
-                    <>
-                        <div className={'comment-delete'} onClick={() => props.handleDeleteComment(props.id)}>DELETE</div>
-                        <div className={'comment-delete'} onClick={() => setEditComment(!editComment)}>{editComment ? 'CLOSE EDIT' : 'EDIT'}</div>
-                    </>
+                <>
+                    <div className={'comment-delete'} onClick={() => props.handleDeleteComment(props.id)}>DELETE</div>
+                    <div className={'comment-delete'}
+                         onClick={() => setEditComment(!editComment)}>{editComment ? 'CLOSE EDIT' : 'EDIT'}</div>
+                </>
                 }
                 <div className={'comment-date'}>{parseTime(props.date)}</div>
             </div>
             <div className={'comment-message'}>
                 {editComment ?
-                        <textarea className={'comment-input'} rows={5} value={writtenComment}
-                                  onChange={(e) => setWrittenComment(e.target.value)}
-                                  placeholder={'Write a comment...'}
-                                  onKeyDown={editCommentHandler}
-                        />
+                    <textarea className={'comment-input'} rows={5} value={writtenComment}
+                              onChange={(e) => setWrittenComment(e.target.value)}
+                              placeholder={'Write a comment...'}
+                              onKeyDown={editCommentHandler}
+                    />
                     :
                     currComment
                 }

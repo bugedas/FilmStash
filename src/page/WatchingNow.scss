@@ -16,30 +16,9 @@
   margin-left: 15px;
 }
 
-
 .watching-now-about-seasons {
   color: v.$grey_light_4;
   font-family: v.$font_sans;
-}
-
-.watching-now-about-next-episode-button {
-  width: 250px;
-  background-color: transparent;
-  color: v.$white_dark;
-  font-family: v.$font_sans;
-  font-size: 15px;
-  transition: all 0.1s;
-  border-radius: 10px;
-  border: 3px solid v.$grey_light_2;
-  text-align: center;
-  padding: 5px 0;
-  cursor: pointer;
-  margin-top: 20px;
-
-  &:hover {
-    background-color: v.$grey_light_2;
-    cursor: pointer;
-  }
 }
 
 .watching-now-title {
@@ -56,6 +35,15 @@
   vertical-align: top;
   flex: 1;
   margin: 0 10px;
+
+  &.alone {
+    max-width: 400px;
+    margin: 0 auto;
+
+    .watching-now-list-item {
+      text-align: left;
+    }
+  }
 }
 
 .watching-now-about-friend-episodes {

@@ -7,6 +7,9 @@ import {addFriendForUser, isAdmin, isUserFriend, removeUser} from "../util/axios
 import FriendsSidebar from "../common/FriendsSidebar";
 import FilmList from "../common/FilmList";
 import defaultUser from "../image/default-user.png";
+import PeopleIcon from '@mui/icons-material/People';
+import Fab from "@mui/material/Fab";
+import {FriendsDialog} from "../common/Dialogs";
 
 export default function Profile() {
 
@@ -15,6 +18,7 @@ export default function Profile() {
     const [currentUser, setCurrentUser] = useState(null);
     const [friend, setFriend] = useState(null);
     const [amIAdmin, setAmIAdmin] = useState(false);
+    const [showFollowing, setShowFollowing] = useState(false);
 
     useEffect(() => {
 
@@ -40,7 +44,7 @@ export default function Profile() {
         setFriend(f);
     }
 
-    if(currentUser === null){
+    if (currentUser === null) {
         return null;
     }
 
@@ -57,12 +61,17 @@ export default function Profile() {
                             <p className="user-email">{currentUser.email}</p>
                         </div>
                     </div>
+                    <Fab sx={{margin: '8px 0px'}} onClick={() => setShowFollowing(true)} size="small">
+                        <PeopleIcon/>
+                    </Fab>
                     {friend && <div className={'user-interactions-section'}>
                         {friend.isFriend ?
-                            <button className={'user-interact-friend-button'} onClick={removeFriend}>REMOVE FRIEND</button> :
-                            <button className={'user-interact-friend-button'} onClick={addFriend}>ADD FRIEND</button>
+                            <button className={'user-interact-friend-button'}
+                                    onClick={removeFriend}>UNFOLLOW</button> :
+                            <button className={'user-interact-friend-button'} onClick={addFriend}>FOLLOW</button>
                         }
-                        {amIAdmin && <button className={'user-interact-friend-button'} onClick={() => removeUser(currentUser.id)}>REMOVE USER</button>}
+                        {amIAdmin && <button className={'user-interact-friend-button'}
+                                             onClick={() => removeUser(currentUser.id)}>REMOVE USER</button>}
                     </div>}
                 </div>
                 <div className={'user-posts-section'}>
@@ -73,6 +82,8 @@ export default function Profile() {
                 <FriendsSidebar userId={currentUser.id}/>
                 <FilmList userId={currentUser.id}/>
             </div>
+            <FriendsDialog userId={currentUser.id} open={showFollowing} onClose={setShowFollowing}/>
         </div>
-    );
+    )
+
 }

@@ -1,0 +1,32 @@
+@use '../../constant/variables' as v;
+
+.action-button {
+  background-color: transparent;
+  color: v.$white_dark;
+  font-family: v.$font_sans;
+  font-size: 15px;
+  transition: all 0.1s;
+  border-radius: 10px;
+  border: 3px solid v.$grey_light_2;
+  text-align: center;
+  padding: 5px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: v.$grey_light_2;
+    border: 2px solid v.$white_dark;
+    padding: 6px 16px;
+  }
+
+  &.on-white {
+    color: v.$white;
+    border-color: v.$red;
+    background-color: v.$red;
+
+    &:hover {
+      background-color: v.$red_light;
+      color: v.$white;
+      border-color: v.$red_light;
+    }
+  }
+}

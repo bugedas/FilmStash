@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Alert from '@mui/material/Alert';
 import {ACCESS_TOKEN, FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL} from "../constant/constants";
 import fbLogo from '../image/fb-logo.png';
@@ -7,6 +7,7 @@ import {Navigate, useLocation} from "react-router-dom";
 import './Login.scss';
 import {postPublicRequest} from "../axios-wrapper";
 import {isLoggedIn} from "../util/axiosUtils";
+import {UserContext} from "../contexts/UserContext";
 
 export default function Login() {
 
@@ -15,11 +16,11 @@ export default function Login() {
     const [alertErr, setAlertErr] = useState('');
     const [showAlert, setShowAlert] = useState(false);
 
-    if(isLoggedIn()) {
+    if (isLoggedIn()) {
         return <Navigate
             to={{
                 pathname: "/",
-                state: { from: location }
+                state: {from: location}
             }}/>;
     }
 
@@ -27,7 +28,7 @@ export default function Login() {
         <div className="login-container">
             <Alert className={`login-alert ${!showAlert && 'hidden'}`} severity="error">{alertErr}</Alert>
             <h1 className="login-title">Login to FilmStash</h1>
-            <SocialLogin />
+            <SocialLogin/>
             <div className="login-or-separator">
                 <span className="login-or-text">OR</span>
             </div>
@@ -41,9 +42,9 @@ function SocialLogin() {
     return (
         <div className="login-social">
             <a className="login-button" href={GOOGLE_AUTH_URL}>
-                <img src={googleLogo} alt="Google" /><span>Log in with Google</span></a>
+                <img src={googleLogo} alt="Google"/><span>Log in with Google</span></a>
             <a className="login-button" href={FACEBOOK_AUTH_URL}>
-                <img src={fbLogo} alt="Facebook" /><span>Log in with Facebook</span></a>
+                <img src={fbLogo} alt="Facebook"/><span>Log in with Facebook</span></a>
         </div>
     );
 }
@@ -53,15 +54,14 @@ function LoginForm(props) {
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const {user, setUser} = useContext(UserContext);
 
     const getError = (errMsg) => {
-        if(email.length === 0 || pass.length === 0) {
+        if (email.length === 0 || pass.length === 0) {
             return "Please fill all fields!";
-        }
-        else if(!email.includes('@')) {
+        } else if (!email.includes('@')) {
             return "Please enter a valid email address!"
-        }
-        else {
+        } else {
             return errMsg;
         }
     }
@@ -69,17 +69,17 @@ function LoginForm(props) {
     const handleSubmit = () => {
         const loginRequest = {email: email, password: pass};
 
-        if(getError('') === '') {
+        if (getError('') === '') {
             postPublicRequest('/auth/login', loginRequest)
                 .then(response => {
                     localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
                     window.location.reload(false);
                 }).catch(error => {
-                    props.setAlertErr(getError(error.response.data.message));
-                    props.setShowAlert(true);
-                    setTimeout(() => {
-                        props.setShowAlert(false);
-                    }, 3000);
+                props.setAlertErr(getError(error.response.data.message));
+                props.setShowAlert(true);
+                setTimeout(() => {
+                    props.setShowAlert(false);
+                }, 3000);
             });
         } else {
             props.setAlertErr(getError('Ooops! Something is wrong!'));

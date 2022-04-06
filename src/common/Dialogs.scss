@@ -1,0 +1,52 @@
+@use '../constant/variables' as v;
+
+.dialog {
+  background-color: v.$white_dark;
+}
+
+.dialog-content {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.dialog-button:hover {
+  text-decoration: underline;
+}
+
+.dialog-repeating-content {
+  width: 100%;
+  max-width: 400px;
+}
+
+.dialog-select-wrapper {
+  font-family: v.$font_lemon;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+.film-in-a-list-film {
+  display: inline-block;
+  width: 75%;
+}
+
+.film-in-a-list-actions {
+  display: inline-block;
+  float: right;
+}
+
+.film-in-a-list-dialog-wrapper {
+  height: 100px;
+}
+
+.film-in-a-list-move, .film-in-a-list-delete {
+  margin: 3px;
+}
+
+.password-dialog-error {
+  color: v.$red;
+  font-family: v.$font_lemon;
+  text-align: left;
+  margin-left: 24px;
+  margin-top: 15px;
+}

@@ -1,0 +1,13 @@
+@use '../constant/variables' as v;
+
+.posts-by-ids-more-button {
+  border: 3px solid v.$grey_light_1;
+  border-radius: 7px;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: all 0.1s;
+
+  &:hover {
+    background-color: v.$grey_light_1;
+  }
+}

@@ -1,49 +1,58 @@
+@use '../constant/variables' as v;
+
 .film-list-section {
-    width: 200px;
-    border-radius: 15px;
-    border: 3px solid #2e2e2e;
-    padding: 5px;
-    margin-top: 30px;
+  width: 200px;
+  border-radius: 15px;
+  border: 3px solid #2e2e2e;
+  padding: 5px;
+  margin-top: 30px;
 }
 
 .film-list-section-header {
-    color: #EE3232;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 20px;
-    text-align: center;
-    padding-bottom: 10px;
+  color: v.$red;
+  font-family: v.$font_lemon;
+  font-size: 20px;
+  text-align: center;
+  padding-bottom: 10px;
 }
 
 .film-in-a-list {
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    cursor: pointer;
-    transition: all, 0.2s;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  transition: all, 0.2s;
 }
 
 .film-in-a-list:hover {
-    background-color: #383434;
-    box-shadow: 0 0 20px 5px #383434;
+  background-color: #383434;
+  box-shadow: 0 0 20px 5px #383434;
 }
 
 .film-in-a-list-image {
-    width: 100px;
-    margin: 0 auto;
-    display: inline-block;
+  width: 100px;
+  margin: 0 auto;
+  display: inline-block;
 }
 
 .film-in-a-list-title {
-    color: #EFEDED;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 12px;
+  color: #EFEDED;
+  font-family: "Lemon-Milk-Light", serif;
+  font-size: 12px;
 }
 
 .film-in-a-list-delete {
-    color: #EE3232;
-    font-family: "Lemon-Milk-Light", serif;
-    font-size: 12px;
-    text-align: right;
-    cursor: pointer;
-    transition: all 0.2s;
+  color: v.$red;
+  font-size: 12px;
+  text-align: right;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.film-in-a-list-wrapper {
+  margin-top: 20px;
+}
+
+.film-line-break {
+  border-color: v.$grey_light_2;
 }

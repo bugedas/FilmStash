@@ -1,34 +1,30 @@
-import React, {useEffect, useState} from 'react';
-import FilmCard from "../common/FilmCard";
+import React, {useContext, useEffect, useState} from 'react';
 import './HomeLoggedIn.scss';
 import PostsByIds from "../common/PostsByIds";
-import {getRequest, getImdbRequest} from "../axios-wrapper";
+import {getRequest} from "../axios-wrapper";
 import FriendsSidebar from "../common/FriendsSidebar";
 import FilmList from "../common/FilmList";
 import FilmCategory from "../common/FilmCategory";
+import {UserContext} from "../contexts/UserContext";
 
 export default function HomeLoggedIn() {
-
-    const [allFilms, setAllFilms] = useState(null);
-    const [user, setUser] = useState(null);
+    const {user} = useContext(UserContext);
     const [friends, setFriends] = useState(null);
 
     useEffect(() => {
         const getData = async () => {
-            const filmsData = await getImdbRequest(`top250.json`);
-            setAllFilms(filmsData.data.items);
-            const userData = await getRequest(`/api/user/me`);
-            setUser(userData?.data);
-            const friendsData = await getRequest(`/api/friends/user/${userData?.data?.id}`);
+            const friendsData = await getRequest(`/api/friends/user/${user?.id}`);
             const friendIds = friendsData?.data?.map(f => {
                 return f.followedId;
             })
             setFriends(friendIds);
         };
-        getData();
-    }, []);
+        if (user) {
+            getData();
+        }
+    }, [user]);
 
-    if(allFilms === null || friends === null || user === null) {
+    if (friends === null || user === null) {
         return null;
     }
 
