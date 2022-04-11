@@ -13,6 +13,7 @@ import {UserContext} from "../contexts/UserContext";
 import {Tooltip} from "@mui/material";
 import Fab from "@mui/material/Fab";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function Post(props) {
     const [film, setFilm] = useState(null);
@@ -43,14 +44,14 @@ export default function Post(props) {
     const addLike = async () => {
         if (!userLiked) {
             const likeData = {
-                id: `${props.type}${props.filmId}U${props.userId}`,
+                id: `${props.type}${props.id}U${currUser.id}`,
                 filmId: props.filmId,
                 userId: props.userId,
             }
             await postRequest('/api/likes/add', likeData);
             await likeAmountChange(1);
         } else {
-            await deleteRequest(`/api/likes/${props.type}${props.filmId}U${props.userId}`);
+            await deleteRequest(`/api/likes/${props.type}${props.id}U${currUser.id}`);
             await likeAmountChange(-1);
         }
         setUserLiked(!userLiked);
@@ -70,7 +71,7 @@ export default function Post(props) {
             setFilm(tmdbData.data);
             const userData = await getRequest(`/api/user/id/${props.userId}`);
             setUser(userData.data);
-            const userLikedData = await getRequest(`/api/likes/${props.type}${props.filmId}U${props.userId}`);
+            const userLikedData = await getRequest(`/api/likes/${props.type}${props.id}U${currUser.id}`);
             setUserLiked(userLikedData?.data);
         }
 
@@ -116,10 +117,12 @@ export default function Post(props) {
                 <div className={'post-card-likes'}>{likeCount} Likes</div>
             </div>
             <div className={'post-card-buttons-section'}>
-                <button className={`post-card-button ${userLiked && 'pressed'}`} onClick={addLike}>Like</button>
+                <button className={`post-card-button ${userLiked && 'pressed'}`} onClick={addLike}>
+                    <FavoriteIcon/>
+                    <span style={{verticalAlign: 'super', marginLeft: '5px'}}>Like</span>
+                </button>
                 <button className={'post-card-button'} onClick={() => setShowWriteComment(!showWriteComment)}>Comment
                 </button>
-                <button className={'post-card-button'}>Share</button>
             </div>
             <PostCommentSection currentUserId={currUser.id} thisUserId={props.userId}
                                 showWriteComment={showWriteComment} postId={props.id}/>
@@ -182,7 +185,7 @@ function PostCommentSection(props) {
             {comments && showCommentsAmount > 1 &&
             <div className={'collapse-comments'} onClick={() => setShowCommentsAmount(1)}>Hide comments...</div>
             }
-            {comments && comments.slice(0, showCommentsAmount).map(comment => {
+            {comments && comments.reverse().slice(0, showCommentsAmount).map(comment => {
                 return (<Comment handleDeleteComment={handleDeleteComment} key={comment.id} {...comment}/>);
             })}
             {comments && comments.length > showCommentsAmount &&

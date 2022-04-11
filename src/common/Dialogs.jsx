@@ -9,8 +9,9 @@ import {LIST_TYPES} from "../constant/constants";
 import {selectStylesOnWhite} from "../util/BaseUtils";
 import Select from "react-select";
 import Fab from "@mui/material/Fab";
-import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export function DeleteDialog(props) {
     const {onClose, open} = props;
@@ -38,7 +39,6 @@ export function DeleteDialog(props) {
 
 export function ChangePassDialog(props) {
     const {onClose, open} = props;
-    const [oldPass, setOldPass] = useState('');
     const [newPass, setNewPass] = useState('');
     const [newPassRepeat, setNewPassRepeat] = useState('');
     const [error, setError] = useState('');
@@ -56,11 +56,8 @@ export function ChangePassDialog(props) {
     const handleClose = async (value) => {
         if (value) {
             setError(getError());
-            const {data: isOldPassCorrect} = await postRequest('auth/user/checkpass', oldPass);
-            console.log(isOldPassCorrect);
-            if (isOldPassCorrect && newPass === newPassRepeat) {
-                const data = {password: newPass}
-                await putRequest('api/user', data);
+            if (newPass === newPassRepeat) {
+                await postRequest('auth/user/changePass', newPass);
             }
         }
         onClose(value);
@@ -73,15 +70,6 @@ export function ChangePassDialog(props) {
             </DialogTitle>
             <DialogContent>
                 <div>
-                    <TextField
-                        variant="filled"
-                        sx={{bgcolor: 'white', display: 'block', margin: 3}}
-                        size="small"
-                        onChange={e => setOldPass(e.target.value)}
-                        type="password"
-                        label="Current password"
-                        required
-                    />
                     <TextField
                         variant="filled"
                         sx={{bgcolor: 'white', display: 'block', margin: 3}}
@@ -141,7 +129,7 @@ export function FriendsDialog(props) {
 }
 
 export function FilmListDialog(props) {
-    const {onClose, open, allFilms, userId, deleteFilm, moveFilm} = props;
+    const {onClose, open, allFilms, userId, deleteFilm, moveFilm, permissions} = props;
     const [films, setFilms] = useState(null);
     const [listType, setListType] = useState(LIST_TYPES[0].value);
 
@@ -198,14 +186,16 @@ export function FilmListDialog(props) {
                             defaultValue={LIST_TYPES[0]}
                             onChange={e => setListType(e.value)}/>
                 </div>
-                <div className={'dialog-repeating-content'}>{films?.filter(f => f.listType === listType)?.map(film =>
-                    <ListFilmResult result={film} deleteFilm={deleteFilm ? deleteFilm : removeFilmFromList}
+                <div
+                    className={'dialog-repeating-content-film-list'}>{films?.filter(f => f.listType === listType)?.map(film =>
+                    <ListFilmResult result={film} permissions={permissions}
+                                    deleteFilm={deleteFilm ? deleteFilm : removeFilmFromList}
                                     moveFilm={moveFilm ? moveFilm : moveToAnotherList}/>)}</div>
             </DialogContent>
         </Dialog>
     );
 
-    function ListFilmResult({result, deleteFilm, moveFilm}) {
+    function ListFilmResult({result, deleteFilm, moveFilm, permissions}) {
         const [film, setFilm] = useState(null);
         useEffect(async () => {
             const filmData = await tmdbGetRequest(`${result.type}/${result.filmId}?`);
@@ -222,22 +212,64 @@ export function FilmListDialog(props) {
                     <SearchResult result={film}/>
                 </div>
                 <div className={'film-in-a-list-actions'}>
-                    <div className={'film-in-a-list-move'}>
-                        <Tooltip title={result.listType === 'watched' ? 'Move back to WATCH LATER' : 'Move to WATCHED'}>
-                            <Fab sx={{marginLeft: '10px', transform: result.listType === 'watched' && 'rotate(180deg)'}}
-                                 onClick={() => moveFilm(result)} size="small"><DoubleArrowIcon/></Fab>
-                        </Tooltip>
-                    </div>
-                    <div className={'film-in-a-list-delete'}>
-                        <Tooltip title="Delete">
-                            <Fab sx={{marginLeft: '10px'}}
-                                 size="small"
-                                 onClick={() => deleteFilm(result.id)}><DeleteIcon/>
-                            </Fab>
-                        </Tooltip>
-                    </div>
+                    {permissions && <>
+                        <div className={'film-in-a-list-move'}>
+                            <Tooltip
+                                title={result.listType === 'watched' ? 'Move back to WATCH LATER' : 'Move to WATCHED'}>
+                                <Fab sx={{marginLeft: '10px'}}
+                                     onClick={() => moveFilm(result)} size="small">
+                                    {result.listType === 'watched' ? <VisibilityOffIcon/> : <VisibilityIcon/>}
+                                </Fab>
+                            </Tooltip>
+                        </div>
+                        <div className={'film-in-a-list-delete'}>
+                            <Tooltip title="Delete">
+                                <Fab sx={{marginLeft: '10px'}}
+                                     size="small"
+                                     onClick={() => deleteFilm(result.id)}><DeleteIcon/>
+                                </Fab>
+                            </Tooltip>
+                        </div>
+                    </>}
                 </div>
             </div>
         )
     }
+}
+
+export function PostsDialog(props) {
+    const {onClose, open, filmId, fType} = props;
+    const [posts, setPosts] = useState(null);
+
+    const handleClose = (value) => {
+        onClose(value);
+    };
+
+    useEffect(async () => {
+        const postsData = await getRequest(`/api/posts/film/${filmId}/${fType}`);
+        setPosts(postsData.data);
+    }, []);
+
+    return (
+        <Dialog fullWidth onClose={() => handleClose(false)} open={open}>
+            <DialogTitle>
+                User opinions:
+                <IconButton sx={{float: 'right'}}>
+                    <ClearIcon onClick={() => handleClose(false)}/>
+                </IconButton>
+            </DialogTitle>
+            <DialogContent>
+                <div className="posts-dialog-content">
+                    {posts?.length >= 1 ? posts?.map(post => {
+                        return <div className="posts-dialog-content-item">
+                            <div className="posts-dialog-item-name">
+                                <a href={`/user/${post.post.userId}`}>{post.userName}</a>
+                            </div>
+                            <div className="posts-dialog-item-message">{post.post.message}</div>
+                        </div>
+                    }) : <div className={'posts-dialog-item-message'}>No reviews yet...</div>}
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
 }

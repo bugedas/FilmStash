@@ -6,6 +6,7 @@ import Select from 'react-select';
 import {getMatchingTvs, selectStylesOnDark} from "../util/BaseUtils";
 import ActionButton from "../common/buttons/ActionButton";
 import {UserContext} from "../contexts/UserContext";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function WatchingNow() {
     const {user} = useContext(UserContext);
@@ -42,7 +43,6 @@ export default function WatchingNow() {
             myMatchingTvs,
             friendMatchingTvs
         } = getMatchingTvs(watchingData.data.filter(watching => !watching.finished), watchingFriendData.data.filter(watching => !watching.finished));
-        // console.log(friendMatchingTvs);
         setMyMatching(myMatchingTvs);
         setFriendMatching(friendMatchingTvs);
 
@@ -159,6 +159,28 @@ function WatchingTv({isMe, watching}) {
         putRequest(`/api/watching-now/${watching.id}`, data);
     }
 
+    const getBackOne = () => {
+        if (episodeState === 1) {
+            return {season: seasonState - 1, episode: tv?.seasons[seasonState - 1]?.episode_count};
+        } else {
+            return {season: seasonState, episode: episodeState - 1};
+        }
+    }
+
+    const backOneEpisode = () => {
+        const {season, episode} = getBackOne();
+
+        const data = {
+            ...watching,
+            seasonNr: season,
+            episodeNr: episode,
+        }
+
+        setSeasonState(season);
+        setEpisodeState(episode);
+        putRequest(`/api/watching-now/${watching.id}`, data);
+    }
+
     if (nextSeasonEpisode().nextSeason === 0) {
         return null;
     }
@@ -170,9 +192,15 @@ function WatchingTv({isMe, watching}) {
             <div className={'watching-now-about'}>
                 <div className={'watching-now-about-name'}>{tv?.name}</div>
                 <div className={'watching-now-about-seasons'}>Seasons: {tv?.number_of_seasons}</div>
-                {isMe ? <ActionButton sx={{marginTop: '20px'}} onClick={clickNextEpisode}>
-                        I watched Season {nextSeasonEpisode().nextSeason} Episode {nextSeasonEpisode().nextEpisode}
-                    </ActionButton> :
+                {isMe ? <>
+                        <ActionButton sx={{marginTop: '20px'}} onClick={clickNextEpisode}>
+                            I watched Season {nextSeasonEpisode().nextSeason} Episode {nextSeasonEpisode().nextEpisode}
+                        </ActionButton>
+                        {seasonState !== 0 && <div><ActionButton sx={{marginTop: '7px'}} onClick={backOneEpisode}>
+                            <ArrowBackIcon/><span
+                            style={{verticalAlign: 'super', marginleft: '5px'}}>Back 1 episode</span>
+                        </ActionButton></div>}
+                    </> :
                     <div
                         className={'watching-now-about-friend-episodes'}>Season {watching.seasonNr} Episode {watching.episodeNr}</div>}
             </div>

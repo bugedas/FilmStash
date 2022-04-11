@@ -8,6 +8,11 @@ import {tmdbImageLink} from "../constant/constants";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {UserContext} from "../contexts/UserContext";
+import {PostsDialog} from "../common/Dialogs";
+import MessageIcon from '@mui/icons-material/Message';
+import Fab from "@mui/material/Fab";
+import {Tooltip} from "@mui/material";
+import Alert from "@mui/material/Alert";
 
 export default function TvSeries() {
 
@@ -20,6 +25,8 @@ export default function TvSeries() {
     const [imageFrom, setImageFrom] = useState(0);
     const [watching, setWatching] = useState(false);
     const [watchingTvData, setWatchingTvData] = useState(false);
+    const [showPostsDialog, setShowPostsDialog] = useState(false);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
     const navigate = useNavigate();
 
@@ -49,6 +56,11 @@ export default function TvSeries() {
             listType: 'watch_later',
             type: 'tv',
         }
+
+        setShowSuccessAlert(true);
+        setTimeout(() => {
+            setShowSuccessAlert(false);
+        }, 3000);
 
         postRequest('/api/films/film/add', data);
     }
@@ -93,13 +105,22 @@ export default function TvSeries() {
 
     return (
         <div className={'tv-page'}>
+            <Alert className={`signup-alert ${!showSuccessAlert && 'hidden'}`} severity="success">Successfully added to
+                your list</Alert>
             <div className={'tv-page-header'}>
                 {tv?.name}
             </div>
             <div className={'tv-page-data'}>
                 <span className={'tv-page-year'}>Year: {tv?.first_air_date}</span>
                 <span className={'tv-page-imdb'}>IMDB Rating: {tv?.vote_average}</span>
+                <Tooltip title="View user reviews">
+                    <Fab sx={{marginLeft: '20px'}}
+                         size="small"
+                         onClick={() => setShowPostsDialog(true)}><MessageIcon/>
+                    </Fab>
+                </Tooltip>
             </div>
+            <PostsDialog filmId={id} open={showPostsDialog} onClose={setShowPostsDialog} fType="tv"/>
             <img src={mainImage} alt={tv?.name} className={'tv-page-image'}/>
             <div className={'tv-page-bottom-row'}>
                 <div className={'tv-page-bottom-image-container'}>

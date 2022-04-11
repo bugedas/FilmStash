@@ -8,7 +8,7 @@ import defaultUser from "../image/default-user.png";
 import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
 import Fab from '@mui/material/Fab';
-import {TextField} from "@mui/material";
+import {Switch, TextField} from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {ChangePassDialog} from "../common/Dialogs";
 import {UserContext} from "../contexts/UserContext";
@@ -28,12 +28,16 @@ export default function Profile() {
         setUserEditing(!userEditing);
     }
 
+    const changePrivacy = async (value) => {
+        const data = {...currentUser, userPrivate: value.target.checked}
+        await putRequest('api/user', data);
+    }
+
     if (currentUser === null) {
         return null;
     }
 
     return (
-
         <div className={'profile-wrapper'}>
             <div className="profile-container">
                 <div className="profile-info">
@@ -59,6 +63,8 @@ export default function Profile() {
                             </Fab>
                         </h2>
                         <p className="profile-email">{currentUser.email}</p>
+                        <div><Switch defaultChecked={currentUser.userPrivate} onChange={changePrivacy}/>Private profile
+                        </div>
                         {currentUser.provider === 'local' &&
                         <p><span className="profile-change-password" onClick={() => setShowChangePass(true)}>Change password?</span>
                         </p>}

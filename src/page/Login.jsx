@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import Alert from '@mui/material/Alert';
-import {ACCESS_TOKEN, FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL} from "../constant/constants";
-import fbLogo from '../image/fb-logo.png';
+import {ACCESS_TOKEN, GOOGLE_AUTH_URL} from "../constant/constants";
 import googleLogo from '../image/google-logo.png';
 import {Navigate, useLocation} from "react-router-dom";
 import './Login.scss';
@@ -43,8 +42,6 @@ function SocialLogin() {
         <div className="login-social">
             <a className="login-button" href={GOOGLE_AUTH_URL}>
                 <img src={googleLogo} alt="Google"/><span>Log in with Google</span></a>
-            <a className="login-button" href={FACEBOOK_AUTH_URL}>
-                <img src={fbLogo} alt="Facebook"/><span>Log in with Facebook</span></a>
         </div>
     );
 }

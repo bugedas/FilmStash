@@ -8,10 +8,11 @@ import {filmTvLink, selectStylesOnDark} from "../util/BaseUtils";
 import Select from "react-select";
 import ActionButton from "./buttons/ActionButton";
 import {FilmListDialog} from "./Dialogs";
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from "@mui/material/Fab";
 import {Tooltip} from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export default function FilmList(props) {
     const [filmsInList, setFilmsInList] = useState(null);
@@ -69,7 +70,7 @@ export default function FilmList(props) {
             })}
             <ActionButton sx={{marginTop: '20px'}} onClick={() => setListDialog(true)}>View All</ActionButton>
             <FilmListDialog allFilms={filmsInList} open={listDialog} onClose={setListDialog}
-                            deleteFilm={removeFilmFromList} moveFilm={moveToAnotherList}/>
+                            deleteFilm={removeFilmFromList} moveFilm={moveToAnotherList} permissions={hasPerm}/>
         </div>
     )
 }
@@ -97,8 +98,12 @@ function ListFilm(props) {
             <>
                 <Tooltip title={props.dbFilm.listType === 'watched' ? 'Move back to WATCH LATER' : 'Move to WATCHED'}>
                     <Fab sx={{marginLeft: '10px'}} className={'film-in-a-list-move'}
-                         onClick={() => props.moveList(props.dbFilm)} size="small"><DoubleArrowIcon
-                        sx={props.dbFilm.listType === 'watched' && {transform: 'rotate(180deg)'}}/></Fab>
+                         onClick={() => props.moveList(props.dbFilm)} size="small">
+                        {props.dbFilm.listType === 'watched' ?
+                            <VisibilityOffIcon/> :
+                            <VisibilityIcon/>
+                        }
+                    </Fab>
                 </Tooltip>
                 <Tooltip title="Delete">
                     <Fab sx={{marginLeft: '10px'}} className={'film-in-a-list-delete'} size="small"

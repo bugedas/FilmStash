@@ -10,7 +10,8 @@
 }
 
 .post-card-header {
-  padding: 20px 0;
+  height: 50px;
+  margin-top: 5px;
   color: #EFEDED;
   font-family: "Lemon-Milk-Light", serif;
   font-size: 10px;
@@ -24,6 +25,7 @@
   text-decoration: underline solid transparent;
   font-size: 12px;
   margin-left: 10px;
+  margin-top: 15px;
 
   &:hover {
     text-decoration: underline solid v.$red;

@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import fbLogo from '../image/fb-logo.png';
 import googleLogo from '../image/google-logo.png';
-import {FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL} from "../constant/constants";
+import {GOOGLE_AUTH_URL} from "../constant/constants";
 import Alert from '@mui/material/Alert';
-import { Navigate } from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 import './Signup.scss';
 import {postPublicRequest} from "../axios-wrapper";
 import {isLoggedIn} from "../util/axiosUtils";
@@ -13,7 +12,7 @@ export default function Signup() {
     const [alertErr, setAlertErr] = useState('');
     const [showAlert, setShowAlert] = useState(false);
 
-    if(isLoggedIn()) {
+    if (isLoggedIn()) {
         return <Navigate to={"/"}/>;
     }
 
@@ -21,7 +20,7 @@ export default function Signup() {
         <div className="signup-container">
             <Alert className={`signup-alert ${!showAlert && 'hidden'}`} severity="error">{alertErr}</Alert>
             <h1 className="signup-title">Signup with FilmStash</h1>
-            <SocialSignup />
+            <SocialSignup/>
             <div className="signup-or-separator">
                 <span className="signup-or-text">OR</span>
             </div>
@@ -36,9 +35,7 @@ function SocialSignup() {
     return (
         <div className="signup-social">
             <a className="signup-button" href={GOOGLE_AUTH_URL}>
-                <img src={googleLogo} alt="Google" /><span>Sign up with Google</span></a>
-            <a className="signup-button" href={FACEBOOK_AUTH_URL}>
-                <img src={fbLogo} alt="Facebook" /> <span>Sign up with Facebook</span></a>
+                <img src={googleLogo} alt="Google"/><span>Sign up with Google</span></a>
         </div>
     );
 }
@@ -47,34 +44,33 @@ function SignupForm(props) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showSuccess, setShowSuccess] = useState(false);
+    const navigate = useNavigate();
 
     const getError = (errMsg) => {
-        if(name.length === 0 || email.length === 0 || password.length === 0) {
+        if (name.length === 0 || email.length === 0 || password.length === 0) {
             return "Please fill all fields!";
-        }
-        else if(!email.includes('@')) {
+        } else if (!email.includes('@')) {
             return "Please enter a valid email address!"
-        }
-        else if(password.length < 6) {
+        } else if (password.length < 6) {
             return "Please use a stronger password!"
-        }
-        else {
+        } else {
             return errMsg;
         }
     }
 
     const handleSubmit = () => {
         const signUpRequest = {name: name, email: email, password: password};
-        if(getError('') === '') {
+        if (getError('') === '') {
             postPublicRequest('/auth/signup', signUpRequest)
                 .then(response => {
-                    return <Navigate to="/login"/>;
+                    navigate("/login");
                 }).catch(error => {
-                    props.setAlertErr(getError(error.message));
-                    props.setShowAlert(true);
-                    setTimeout(() => {
-                        props.setShowAlert(false);
-                    }, 3000);
+                props.setAlertErr(getError(error.response.data.message));
+                props.setShowAlert(true);
+                setTimeout(() => {
+                    props.setShowAlert(false);
+                }, 3000);
             });
         } else {
             props.setAlertErr(getError('Ooops! Something is wrong!'));
@@ -96,7 +92,7 @@ function SignupForm(props) {
             <input type="password" name="password"
                    className="signup-form-input" placeholder="Password"
                    value={password} onChange={(e) => setPassword(e.target.value)} required/>
-            <button onClick={handleSubmit} className="signup-form-button" >Sign Up</button>
+            <button onClick={handleSubmit} className="signup-form-button">Sign Up</button>
         </div>
     );
 }

@@ -8,6 +8,11 @@ import {tmdbImageLink} from "../constant/constants";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {UserContext} from "../contexts/UserContext";
+import Fab from "@mui/material/Fab";
+import MessageIcon from "@mui/icons-material/Message";
+import {Tooltip} from "@mui/material";
+import {PostsDialog} from "../common/Dialogs";
+import Alert from "@mui/material/Alert";
 
 export default function Film() {
     const {id} = useParams()
@@ -17,6 +22,8 @@ export default function Film() {
     const [mainImage, setMainImage] = useState(filmPlaceholder);
     const [imageFrom, setImageFrom] = useState(0);
     const [movie, setMovie] = useState(null);
+    const [showPostsDialog, setShowPostsDialog] = useState(false);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
     const navigate = useNavigate();
 
@@ -47,6 +54,11 @@ export default function Film() {
             type: 'movie',
         }
 
+        setShowSuccessAlert(true);
+        setTimeout(() => {
+            setShowSuccessAlert(false);
+        }, 3000);
+
         postRequest('/api/films/film/add', data);
     }
 
@@ -75,12 +87,21 @@ export default function Film() {
 
     return (
         <div className={'film-page'}>
+            <Alert className={`signup-alert ${!showSuccessAlert && 'hidden'}`} severity="success">Successfully added to
+                your list</Alert>
             <div className={'film-page-header'}>
                 {movie?.title}
             </div>
             <div className={'film-page-data'}>
                 <span className={'film-page-year'}>Year: {movie?.release_date}</span>
                 <span className={'film-page-imdb'}>IMDB Rating: {movie.vote_average}</span>
+                <Tooltip title="View user reviews">
+                    <Fab sx={{marginLeft: '20px'}}
+                         size="small"
+                         onClick={() => setShowPostsDialog(true)}><MessageIcon/>
+                    </Fab>
+                </Tooltip>
+                <PostsDialog filmId={id} open={showPostsDialog} onClose={setShowPostsDialog} fType="movie"/>
             </div>
             <img src={mainImage} alt={movie?.title} className={'film-page-image'}/>
             <div className={'film-page-bottom-row'}>

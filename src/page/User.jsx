@@ -61,27 +61,30 @@ export default function Profile() {
                             <p className="user-email">{currentUser.email}</p>
                         </div>
                     </div>
-                    <Fab sx={{margin: '8px 0px'}} onClick={() => setShowFollowing(true)} size="small">
-                        <PeopleIcon/>
-                    </Fab>
-                    {friend && <div className={'user-interactions-section'}>
-                        {friend.isFriend ?
-                            <button className={'user-interact-friend-button'}
-                                    onClick={removeFriend}>UNFOLLOW</button> :
-                            <button className={'user-interact-friend-button'} onClick={addFriend}>FOLLOW</button>
-                        }
-                        {amIAdmin && <button className={'user-interact-friend-button'}
-                                             onClick={() => removeUser(currentUser.id)}>REMOVE USER</button>}
-                    </div>}
+                    {!currentUser.userPrivate &&
+                    <>
+                        <Fab sx={{margin: '8px 0px'}} onClick={() => setShowFollowing(true)} size="small">
+                            <PeopleIcon/>
+                        </Fab>
+                        {friend && <div className={'user-interactions-section'}>
+                            {friend.isFriend ?
+                                <button className={'user-interact-friend-button'}
+                                        onClick={removeFriend}>UNFOLLOW</button> :
+                                <button className={'user-interact-friend-button'} onClick={addFriend}>FOLLOW</button>
+                            }
+                            {amIAdmin && <button className={'user-interact-friend-button'}
+                                                 onClick={() => removeUser(currentUser.id)}>REMOVE USER</button>}
+                        </div>}
+                    </>}
                 </div>
-                <div className={'user-posts-section'}>
+                {!currentUser.userPrivate && <div className={'user-posts-section'}>
                     <PostsByIds userIds={[currentUser.id]}/>
-                </div>
+                </div>}
             </div>
-            <div className={'user-section'}>
+            {!currentUser.userPrivate && <div className={'user-section'}>
                 <FriendsSidebar userId={currentUser.id}/>
                 <FilmList userId={currentUser.id}/>
-            </div>
+            </div>}
             <FriendsDialog userId={currentUser.id} open={showFollowing} onClose={setShowFollowing}/>
         </div>
     )

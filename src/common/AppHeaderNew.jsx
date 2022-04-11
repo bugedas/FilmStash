@@ -12,6 +12,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import {filmTvLink} from "../util/BaseUtils";
 import {UserContext} from "../contexts/UserContext";
 import {FilmListDialog, FriendsDialog} from "./Dialogs";
+import LaunchIcon from '@mui/icons-material/Launch';
+import {useNavigate} from "react-router-dom";
 
 export default function AppHeaderNew() {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -20,9 +22,11 @@ export default function AppHeaderNew() {
     const [listDialog, setListDialog] = useState(false);
     const {user} = useContext(UserContext);
     const accessTk = localStorage.getItem(ACCESS_TOKEN);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
+        navigate('/');
         window.location.reload(false);
     }
 
@@ -60,7 +64,7 @@ export default function AppHeaderNew() {
                         <a onClick={handleLogout}>Logout</a>
                     </div>
                     <FriendsDialog userId={user.id} open={showFollowing} onClose={setShowFollowing}/>
-                    <FilmListDialog userId={user.id} open={listDialog} onClose={setListDialog}/>
+                    <FilmListDialog userId={user.id} open={listDialog} onClose={setListDialog} permissions={true}/>
                 </>
             ) : (
                 <>
@@ -134,7 +138,7 @@ function Search(props) {
 export function SearchResult({result}) {
     const [link, setLink] = useState('');
 
-    useEffect(() => {
+    useEffect(async () => {
         const getData = async () => {
             if (result.media_type === 'person') {
                 const person = await tmdbGetRequest(`person/${result.id}?`);
@@ -144,9 +148,9 @@ export function SearchResult({result}) {
             }
         }
 
-        getData();
+        await getData();
 
-    }, []);
+    }, [result]);
 
     const resultImage = (result) => {
         if (result.poster_path) {
@@ -160,11 +164,13 @@ export function SearchResult({result}) {
 
     return (
         <a href={link} target={result.media_type === 'person' && '_blank'} className={'header-search-result'}>
+
             <img className={'hsr-image'} src={resultImage(result)} alt={`${result.name} image`}/>
             <div className={'hsr-info'}>
                 <div className={'hsr-title'}>{result.name || result.title}</div>
                 <div className={'hsr-type'}>{`${result.media_type[0].toUpperCase()}${result.media_type.slice(1)}`}</div>
             </div>
+            {result.media_type === 'person' && <LaunchIcon sx={{marginLeft: 'auto'}}/>}
         </a>
     )
 }

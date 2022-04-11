@@ -87,6 +87,7 @@
   max-height: 80px;
   color: inherit;
   text-decoration: inherit;
+  flex: auto;
 
   &:hover {
     background-color: v.$grey_light_2;
