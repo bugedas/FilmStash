@@ -215,7 +215,7 @@ export function FilmListDialog(props) {
                     {permissions && <>
                         <div className={'film-in-a-list-move'}>
                             <Tooltip
-                                title={result.listType === 'watched' ? 'Move back to WATCH LATER' : 'Move to WATCHED'}>
+                                title={result.listType === 'watched' ? 'NOT WATCHED' : 'WATCHED'}>
                                 <Fab sx={{marginLeft: '10px'}}
                                      onClick={() => moveFilm(result)} size="small">
                                     {result.listType === 'watched' ? <VisibilityOffIcon/> : <VisibilityIcon/>}
@@ -253,7 +253,7 @@ export function PostsDialog(props) {
     return (
         <Dialog fullWidth onClose={() => handleClose(false)} open={open}>
             <DialogTitle>
-                User opinions:
+                User reviews:
                 <IconButton sx={{float: 'right'}}>
                     <ClearIcon onClick={() => handleClose(false)}/>
                 </IconButton>
@@ -268,6 +268,40 @@ export function PostsDialog(props) {
                             <div className="posts-dialog-item-message">{post.post.message}</div>
                         </div>
                     }) : <div className={'posts-dialog-item-message'}>No reviews yet...</div>}
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+export function ChangeImageDialog(props) {
+    const {onClose, open} = props;
+    const [imageLink, setImageLink] = useState('');
+
+    const handleClose = (value) => {
+        onClose(value, imageLink);
+    };
+
+    return (
+        <Dialog onClose={() => handleClose(false)} open={open}>
+            <DialogTitle>Want to change profile picture?
+                <IconButton sx={{float: 'right'}}>
+                    <ClearIcon onClick={() => handleClose(false)}/>
+                </IconButton>
+            </DialogTitle>
+            <DialogContent>
+                <div>
+                    <TextField
+                        // variant="filled"
+                        sx={{bgcolor: 'white', width: '100%', marginBottom: '20px', marginTop: '10px'}}
+                        onChange={e => setImageLink(e.target.value)}
+                        // type="text"
+                        label="Image link"
+                    />
+                </div>
+                <div className={'dialog-content'}>
+                    <ActionButton onWhite onClick={() => handleClose(true)}>YES</ActionButton>
+                    <ActionButton onWhite onClick={() => handleClose(false)}>NO</ActionButton>
                 </div>
             </DialogContent>
         </Dialog>

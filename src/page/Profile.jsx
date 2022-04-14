@@ -1,6 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Profile.scss';
-import {putRequest} from "../axios-wrapper";
+import {getRequest, putRequest} from "../axios-wrapper";
 import PostsByIds from "../common/PostsByIds";
 import FriendsSidebar from "../common/FriendsSidebar";
 import FilmList from "../common/FilmList";
@@ -10,14 +10,24 @@ import DoneIcon from '@mui/icons-material/Done';
 import Fab from '@mui/material/Fab';
 import {Switch, TextField} from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import {ChangePassDialog} from "../common/Dialogs";
+import {ChangeImageDialog, ChangePassDialog} from "../common/Dialogs";
 import {UserContext} from "../contexts/UserContext";
+import UserStatistics from "../common/UserStatistics";
 
 export default function Profile() {
     const {user: currentUser, setUser: setCurrentUser} = useContext(UserContext);
     const [userEditing, setUserEditing] = useState(false);
     const [changedName, setChangedName] = useState('');
     const [showChangePass, setShowChangePass] = useState(false);
+    const [showChangeImage, setShowChangeImage] = useState(false);
+    const [userImg, setUserImg] = useState('');
+    const [userMetrics, setUserMetrics] = useState(null);
+
+    useEffect(async () => {
+        const userMetricsData = await getRequest(`/api/user/metrics/${currentUser?.id}`);
+        setUserMetrics(userMetricsData.data);
+    }, [currentUser]);
+
 
     const userEdit = async () => {
         if (userEditing && changedName.length >= 5) {
@@ -26,6 +36,16 @@ export default function Profile() {
             setCurrentUser(editedUser.data);
         }
         setUserEditing(!userEditing);
+    }
+
+    const changeImg = async (value, imageLink) => {
+        if (value) {
+            const data = {...currentUser, imageUrl: imageLink}
+            const editedUser = await putRequest('api/user', data);
+            setCurrentUser(editedUser.data);
+        }
+        setUserImg('');
+        setShowChangeImage(false);
     }
 
     const changePrivacy = async (value) => {
@@ -40,9 +60,13 @@ export default function Profile() {
     return (
         <div className={'profile-wrapper'}>
             <div className="profile-container">
+                <ChangeImageDialog open={showChangeImage} onClose={changeImg}/>
                 <div className="profile-info">
                     <div className="profile-avatar">
-                        <img src={currentUser.imageUrl || defaultUser} alt={currentUser.name}/>
+                        <img style={{cursor: 'pointer'}} onClick={() => setShowChangeImage(true)}
+                             src={userImg || currentUser?.imageUrl || defaultUser}
+                             onError={() => setUserImg(defaultUser)}
+                             alt={currentUser.name}/>
                     </div>
                     <div className="profile-name">
                         <h2>
@@ -71,6 +95,7 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className={'profile-posts-section'}>
+                    <UserStatistics userMetrics={userMetrics}/>
                     <PostsByIds userIds={[currentUser.id]}/>
                 </div>
             </div>

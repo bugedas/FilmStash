@@ -177,6 +177,7 @@ export function SearchResult({result}) {
 
 export function UserResult({userId, result}) {
     const [userData, setUserData] = useState(null);
+    const [userImg, setUserImg] = useState('');
 
     useEffect(async () => {
         if (!result) {
@@ -193,11 +194,11 @@ export function UserResult({userId, result}) {
 
     return (
         <a href={`/user/${userData.id}`} className={'header-search-result'}>
-            <img className={'hsr-image'} src={userData?.imageUrl || defaultUser}
+            <img className={'hsr-image'} src={userImg || userData?.imageUrl || defaultUser}
+                 onError={() => setUserImg(defaultUser)}
                  alt={`${userData.name} image`}/>
             <div className={'hsr-info'}>
                 <div className={'hsr-title'}>{userData.name}</div>
-                <div className={'hsr-year'}>{userData.email}</div>
             </div>
         </a>
     )

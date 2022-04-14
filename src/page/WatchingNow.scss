@@ -35,6 +35,10 @@
   vertical-align: top;
   flex: 1;
   margin: 0 10px;
+  
+  .watching-now-list-item {
+    text-align: left;
+  }
 
   &.alone {
     max-width: 400px;
@@ -72,4 +76,9 @@
   font-size: 25px;
   margin-bottom: 25px;
   border-bottom: 1px solid v.$white_dark;
+}
+
+.watching-now-about-finished {
+  color: v.$red_light;
+  font-family: v.$font_sans;
 }

@@ -10,6 +10,7 @@ import defaultUser from "../image/default-user.png";
 import PeopleIcon from '@mui/icons-material/People';
 import Fab from "@mui/material/Fab";
 import {FriendsDialog} from "../common/Dialogs";
+import UserStatistics from "../common/UserStatistics";
 
 export default function Profile() {
 
@@ -19,16 +20,21 @@ export default function Profile() {
     const [friend, setFriend] = useState(null);
     const [amIAdmin, setAmIAdmin] = useState(false);
     const [showFollowing, setShowFollowing] = useState(false);
+    const [userImg, setUserImg] = useState('');
+    const [userMetrics, setUserMetrics] = useState(null);
 
     useEffect(() => {
 
         const getUserData = async () => {
             const userData = await getRequest(`/api/user/id/${id}`);
             setCurrentUser(userData.data);
+            const userMetricsData = await getRequest(`/api/user/metrics/${id}`);
+            setUserMetrics(userMetricsData.data);
             const isFriend = await isUserFriend(userData.data.id);
             setFriend(isFriend);
             const amAdmin = await isAdmin();
             setAmIAdmin(amAdmin);
+
         }
 
         getUserData();
@@ -54,11 +60,11 @@ export default function Profile() {
                 <div className="user-container">
                     <div className="user-info">
                         <div className="user-avatar">
-                            <img src={currentUser.imageUrl || defaultUser} alt={currentUser.name}/>
+                            <img src={userImg || currentUser?.imageUrl || defaultUser}
+                                 onError={() => setUserImg(defaultUser)} alt={currentUser.name}/>
                         </div>
                         <div className="user-name">
                             <h2>{currentUser?.name}</h2>
-                            <p className="user-email">{currentUser.email}</p>
                         </div>
                     </div>
                     {!currentUser.userPrivate &&
@@ -78,6 +84,7 @@ export default function Profile() {
                     </>}
                 </div>
                 {!currentUser.userPrivate && <div className={'user-posts-section'}>
+                    <UserStatistics userMetrics={userMetrics}/>
                     <PostsByIds userIds={[currentUser.id]}/>
                 </div>}
             </div>

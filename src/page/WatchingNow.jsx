@@ -20,7 +20,7 @@ export default function WatchingNow() {
     useEffect(() => {
         const getData = async () => {
             const watchingData = await getRequest(`/api/watching-now/${user.id}`);
-            setMyWatching(watchingData.data);
+            setMyWatching(watchingData.data.reverse());
             const friendsData = await getRequest(`/api/friends/user/full/${user.id}`);
             const friendsMapped = friendsData.data.map(fr => {
                 return {value: fr, label: fr.name}
@@ -43,13 +43,13 @@ export default function WatchingNow() {
             myMatchingTvs,
             friendMatchingTvs
         } = getMatchingTvs(watchingData.data.filter(watching => !watching.finished), watchingFriendData.data.filter(watching => !watching.finished));
-        setMyMatching(myMatchingTvs);
-        setFriendMatching(friendMatchingTvs);
+        setMyMatching(myMatchingTvs.reverse());
+        setFriendMatching(friendMatchingTvs.reverse());
 
         const myFilteredAll = watchingData.data.filter(watching => !myMatchingTvs.find(match => watching === match));
-        setMyWatching(myFilteredAll);
+        setMyWatching(myFilteredAll.reverse());
         const friendFilteredAll = watchingFriendData.data.filter(watching => !friendMatchingTvs.find(match => watching === match));
-        setSelectedFriendTvs(friendFilteredAll);
+        setSelectedFriendTvs(friendFilteredAll.reverse());
     }
 
     if (!myWatching) {
@@ -72,7 +72,7 @@ export default function WatchingNow() {
                 <div className={'watching-now-full-section-wrapper'}>
                     <div className={'watching-now-person-section'}>
                         <div className={'watching-now-person-name'}>My</div>
-                        {myMatching?.filter(watching => !watching.finished)?.map(tv => {
+                        {myMatching?.map(tv => {
                             return (
                                 <WatchingTv key={tv.id} isMe={true} watching={tv}/>
                             )
@@ -80,7 +80,7 @@ export default function WatchingNow() {
                     </div>
                     <div className={'watching-now-person-section'}>
                         <div className={'watching-now-person-name'}>{friendSelected}</div>
-                        {friendMatching?.filter(watching => !watching.finished)?.map(tv => {
+                        {friendMatching?.map(tv => {
                             return (
                                 <WatchingTv key={tv.id} isMe={false} watching={tv}/>
                             )
@@ -94,7 +94,7 @@ export default function WatchingNow() {
             <div className={selectedFriendTvs && 'watching-now-full-section-wrapper'}>
                 <div className={`watching-now-person-section ${!selectedFriendTvs && 'alone'}`}>
                     {selectedFriendTvs && <div className={'watching-now-person-name'}>My</div>}
-                    {myWatching.filter(watching => !watching.finished).map(tv => {
+                    {myWatching.map(tv => {
                         return (
                             <WatchingTv key={tv.id} isMe={true} watching={tv}/>
                         )
@@ -103,7 +103,7 @@ export default function WatchingNow() {
                 {selectedFriendTvs &&
                 <div className={'watching-now-person-section'}>
                     <div className={'watching-now-person-name'}>{friendSelected}</div>
-                    {selectedFriendTvs.filter(watching => !watching.finished).map(tv => {
+                    {selectedFriendTvs.map(tv => {
                         return (
                             <WatchingTv key={tv.id} isMe={false} watching={tv}/>
                         )
@@ -182,7 +182,22 @@ function WatchingTv({isMe, watching}) {
     }
 
     if (nextSeasonEpisode().nextSeason === 0) {
-        return null;
+        return (
+            <div className={'watching-now-list-item'}>
+                <a href={`/tv/${tv?.id}`}><img className={'watching-now-tv-image'}
+                                               src={tmdbImageLink(tv?.poster_path, 'w300')} alt={'image'}/></a>
+                <div className={'watching-now-about'}>
+                    <div className={'watching-now-about-name'}>{tv?.name}</div>
+                    <div className={'watching-now-about-seasons'}>Seasons: {tv?.number_of_seasons}
+                        <div className={'watching-now-about-finished'}>FULLY FINISHED</div>
+                        {isMe &&
+                        <ActionButton sx={{marginTop: '20px'}} onClick={clickNextEpisode}>
+                            WATCH AGAIN!
+                        </ActionButton>}
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -192,9 +207,11 @@ function WatchingTv({isMe, watching}) {
             <div className={'watching-now-about'}>
                 <div className={'watching-now-about-name'}>{tv?.name}</div>
                 <div className={'watching-now-about-seasons'}>Seasons: {tv?.number_of_seasons}</div>
+                {watching.finished && <div className={'watching-now-about-finished'}>FULLY FINISHED</div>}
                 {isMe ? <>
                         <ActionButton sx={{marginTop: '20px'}} onClick={clickNextEpisode}>
-                            I watched Season {nextSeasonEpisode().nextSeason} Episode {nextSeasonEpisode().nextEpisode}
+                            I watched
+                            Season {nextSeasonEpisode().nextSeason} Episode {nextSeasonEpisode().nextEpisode}
                         </ActionButton>
                         {seasonState !== 0 && <div><ActionButton sx={{marginTop: '7px'}} onClick={backOneEpisode}>
                             <ArrowBackIcon/><span

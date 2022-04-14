@@ -124,7 +124,7 @@ export default function Film() {
                     </div>
                 </div>
                 <div className={'film-page-share-button'} onClick={() => setShareOpen(!shareOpen)}>
-                    SHARE
+                    WRITE REVIEW
                 </div>
                 <div className={'film-page-share-button'} onClick={addFilmToList}>ADD TO LIST</div>
                 {shareOpen &&
@@ -152,17 +152,28 @@ export default function Film() {
                 <div className={'film-page-cast-header'}>Cast</div>
                 <div className={'film-page-bottom-cast-container'}>
                     {movie?.credits?.cast?.slice(0, 5).map(person => {
-                        return (
-                            <div key={person.name} className={'film-page-bottom-cast-person'}>
-                                <img className={'film-page-bottom-cast-person-image'}
-                                     src={tmdbImageLink(person.profile_path, 'w200')} alt={person.name}/>
-                                <div className={'film-page-bottom-cast-person-name'}>{person.name}</div>
-                                <div className={'film-page-bottom-cast-person-character'}>{(person.character)}</div>
-                            </div>
-                        )
+                        return (<CastPerson key={person.name} person={person}/>)
                     })}
                 </div>
             </div>
         </div>
     )
+}
+
+export function CastPerson({person}) {
+    const [personExternals, setPersonExternals] = useState(null);
+
+    useEffect(async () => {
+        const personExternalsData = await tmdbGetRequest(`/person/${person.id}/external_ids?`);
+        setPersonExternals(personExternalsData.data);
+    }, []);
+
+    return (
+        <a href={`https://www.imdb.com/name/${personExternals?.imdb_id}`} className={'film-page-bottom-cast-person'}>
+            <img className={'film-page-bottom-cast-person-image'}
+                 src={tmdbImageLink(person.profile_path, 'w200')} alt={person.name}/>
+            <div className={'film-page-bottom-cast-person-name'}>{person.name}</div>
+            <div className={'film-page-bottom-cast-person-character'}>{(person.character)}</div>
+        </a>
+    );
 }

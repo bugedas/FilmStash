@@ -96,7 +96,7 @@ function ListFilm(props) {
         <div className="film-in-a-list-wrapper">
             {props.deletePermission &&
             <>
-                <Tooltip title={props.dbFilm.listType === 'watched' ? 'Move back to WATCH LATER' : 'Move to WATCHED'}>
+                <Tooltip title={props.dbFilm.listType === 'watched' ? 'NOT WATCHED' : 'WATCHED'}>
                     <Fab sx={{marginLeft: '10px'}} className={'film-in-a-list-move'}
                          onClick={() => props.moveList(props.dbFilm)} size="small">
                         {props.dbFilm.listType === 'watched' ?
@@ -113,6 +113,7 @@ function ListFilm(props) {
             </>
             }
             <div className={'film-in-a-list'} onClick={() => navigate(`/${filmTvLink(props.filmType)}/${props.id}`)}>
+                <div className={'film-in-a-list-type'}>{props.filmType}</div>
                 <img src={tmdbImageLink(film?.poster_path, 'w300')} className={'film-in-a-list-image'}
                      alt={'film in a list'}/>
                 <div className={'film-in-a-list-title'}>{film.title || film.name}</div>

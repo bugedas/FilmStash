@@ -13,6 +13,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import Fab from "@mui/material/Fab";
 import {Tooltip} from "@mui/material";
 import Alert from "@mui/material/Alert";
+import {CastPerson} from "./Film";
 
 export default function TvSeries() {
 
@@ -90,7 +91,7 @@ export default function TvSeries() {
             setTv(tvData.data);
             setMainImage(tmdbImageLink(tvData.data.poster_path));
             const watchingData = await getRequest(`/api/watching-now/${user.id}/${id}`);
-            setWatching(watchingData?.data?.stillWatching);
+            setWatching(watchingData?.data?.stillWatching || watchingData?.data?.finished);
             setWatchingTvData(watchingData?.data);
         }
 
@@ -142,7 +143,7 @@ export default function TvSeries() {
                     </div>
                 </div>
                 <div className={'tv-page-share-button'} onClick={() => setShareOpen(!shareOpen)}>
-                    SHARE
+                    WRITE REVIEW
                 </div>
                 <div className={'tv-page-share-button'} onClick={addtvToList}>ADD TO LIST</div>
                 <div className={`tv-page-share-button ${watching && 'watching'}`}
@@ -174,14 +175,7 @@ export default function TvSeries() {
                 <div className={'tv-page-cast-header'}>Cast</div>
                 <div className={'tv-page-bottom-cast-container'}>
                     {tv?.credits?.cast?.slice(0, 5).map(person => {
-                        return (
-                            <div key={person.name} className={'tv-page-bottom-cast-person'}>
-                                <img className={'tv-page-bottom-cast-person-image'}
-                                     src={tmdbImageLink(person.profile_path, 'w200')} alt={person.name}/>
-                                <div className={'tv-page-bottom-cast-person-name'}>{person.name}</div>
-                                <div className={'tv-page-bottom-cast-person-character'}>{(person.character)}</div>
-                            </div>
-                        )
+                        return (<CastPerson key={person.name} person={person}/>)
                     })}
                 </div>
             </div>
