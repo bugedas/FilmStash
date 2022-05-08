@@ -24,8 +24,10 @@ export default function Profile() {
     const [userMetrics, setUserMetrics] = useState(null);
 
     useEffect(async () => {
-        const userMetricsData = await getRequest(`/api/user/metrics/${currentUser?.id}`);
-        setUserMetrics(userMetricsData.data);
+        if (currentUser) {
+            const userMetricsData = await getRequest(`/api/user/metrics/${currentUser?.id}`);
+            setUserMetrics(userMetricsData.data);
+        }
     }, [currentUser]);
 
 

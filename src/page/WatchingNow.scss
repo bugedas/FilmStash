@@ -35,18 +35,15 @@
   vertical-align: top;
   flex: 1;
   margin: 0 10px;
-  
+
   .watching-now-list-item {
     text-align: left;
+    margin-bottom: 25px;
   }
 
   &.alone {
     max-width: 400px;
     margin: 0 auto;
-
-    .watching-now-list-item {
-      text-align: left;
-    }
   }
 }
 

@@ -52,3 +52,13 @@ export const selectStylesOnWhite = {
         backgroundColor: state.isSelected ? '#969696' : '#e0e0e0',
     }),
 }
+
+export const filmTypeString = (type) => {
+    if (type === 'tv') {
+        return 'TV Series';
+    }
+    if (type === 'person') {
+        return 'Person';
+    }
+    return 'Film';
+}

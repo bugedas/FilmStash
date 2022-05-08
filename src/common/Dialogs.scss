@@ -82,3 +82,11 @@
   max-width: 400px;
   width: 100%;
 }
+
+.posts-dialog-item-likes {
+  display: inline-block;
+  float: right;
+  font-family: v.$font_lemon;
+  color: v.$red;
+  margin-right: 5px;
+}

@@ -2,15 +2,9 @@ import React from 'react';
 import './AppFooter.scss';
 
 export default function AppFooter() {
-    return(
-    <div className={'footer'}>
-        <div className={'footer-wrapper'}>
-            <ul>
-                <li><a href={'/'}>HOME</a></li>
-                <li><a href={'/profile'}>PROFILE</a></li>
-            </ul>
+    return (
+        <div className={'footer'}>
+            <div className={'footer-filmstash'}>FILMSTASH 2022</div>
         </div>
-        <div className={'footer-filmstash'}> FILMSTASH 2021</div>
-    </div>
     )
 }

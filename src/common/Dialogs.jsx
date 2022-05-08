@@ -12,6 +12,7 @@ import Fab from "@mui/material/Fab";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export function DeleteDialog(props) {
     const {onClose, open} = props;
@@ -140,7 +141,7 @@ export function FilmListDialog(props) {
     useEffect(async () => {
         if (!allFilms) {
             const friendsData = await getRequest(`/api/films/film/${userId}`);
-            setFilms(friendsData.data.reverse());
+            setFilms(friendsData.data?.sort((a, b) => a.id < b.id ? 1 : -1));
         } else {
             setFilms(allFilms);
         }
@@ -156,7 +157,7 @@ export function FilmListDialog(props) {
         const deletedList = films.filter(f => {
             return f.id !== fId;
         })
-        setFilms(deletedList);
+        setFilms(deletedList.sort((a, b) => a.id < b.id ? 1 : -1));
     }
 
     const moveToAnotherList = async (film) => {
@@ -168,7 +169,7 @@ export function FilmListDialog(props) {
         const deletedList = films.filter(f => {
             return f.id !== film.id;
         })
-        setFilms([...deletedList, data]);
+        setFilms([...deletedList, data].sort((a, b) => a.id < b.id ? 1 : -1));
     }
 
     return (
@@ -247,7 +248,7 @@ export function PostsDialog(props) {
 
     useEffect(async () => {
         const postsData = await getRequest(`/api/posts/film/${filmId}/${fType}`);
-        setPosts(postsData.data);
+        setPosts(postsData.data.sort((a, b) => a.post.likes > b.post.likes ? -1 : 1));
     }, []);
 
     return (
@@ -264,6 +265,10 @@ export function PostsDialog(props) {
                         return <div className="posts-dialog-content-item">
                             <div className="posts-dialog-item-name">
                                 <a href={`/user/${post.post.userId}`}>{post.userName}</a>
+                                <div className={'posts-dialog-item-likes'}>
+                                    <FavoriteIcon/>
+                                    <span style={{verticalAlign: 'top'}}>{post.post.likes}</span>
+                                </div>
                             </div>
                             <div className="posts-dialog-item-message">{post.post.message}</div>
                         </div>
@@ -292,10 +297,8 @@ export function ChangeImageDialog(props) {
             <DialogContent>
                 <div>
                     <TextField
-                        // variant="filled"
                         sx={{bgcolor: 'white', width: '100%', marginBottom: '20px', marginTop: '10px'}}
                         onChange={e => setImageLink(e.target.value)}
-                        // type="text"
                         label="Image link"
                     />
                 </div>

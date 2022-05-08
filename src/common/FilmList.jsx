@@ -4,7 +4,7 @@ import {deleteRequest, getRequest, putRequest, tmdbGetRequest} from "../axios-wr
 import {useNavigate} from "react-router-dom";
 import {hasPermissions} from "../util/axiosUtils";
 import {LIST_TYPES, tmdbImageLink} from "../constant/constants";
-import {filmTvLink, selectStylesOnDark} from "../util/BaseUtils";
+import {filmTvLink, filmTypeString, selectStylesOnDark} from "../util/BaseUtils";
 import Select from "react-select";
 import ActionButton from "./buttons/ActionButton";
 import {FilmListDialog} from "./Dialogs";
@@ -23,7 +23,7 @@ export default function FilmList(props) {
     useEffect(() => {
         const getUserData = async () => {
             const filmsInListData = await getRequest(`/api/films/film/${props.userId}`);
-            setFilmsInList(filmsInListData.data.reverse());
+            setFilmsInList(filmsInListData.data.sort((a, b) => a.id < b.id ? 1 : -1));
             const perm = await hasPermissions(props.userId);
             setHasPerm(perm);
         }
@@ -36,7 +36,7 @@ export default function FilmList(props) {
         const deletedList = filmsInList.filter(f => {
             return f.id !== fId;
         })
-        setFilmsInList(deletedList);
+        setFilmsInList(deletedList.sort((a, b) => a.id < b.id ? 1 : -1));
     }
 
     const moveToAnotherList = async (film) => {
@@ -48,7 +48,7 @@ export default function FilmList(props) {
         const deletedList = filmsInList.filter(f => {
             return f.id !== film.id;
         })
-        setFilmsInList([...deletedList, data]);
+        setFilmsInList([...deletedList, data].sort((a, b) => a.id < b.id ? 1 : -1));
     }
 
     if (filmsInList === null) {
@@ -113,7 +113,7 @@ function ListFilm(props) {
             </>
             }
             <div className={'film-in-a-list'} onClick={() => navigate(`/${filmTvLink(props.filmType)}/${props.id}`)}>
-                <div className={'film-in-a-list-type'}>{props.filmType}</div>
+                <div className={'film-in-a-list-type'}>{filmTypeString(props.filmType)}</div>
                 <img src={tmdbImageLink(film?.poster_path, 'w300')} className={'film-in-a-list-image'}
                      alt={'film in a list'}/>
                 <div className={'film-in-a-list-title'}>{film.title || film.name}</div>

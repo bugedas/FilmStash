@@ -16,6 +16,7 @@ export default function WatchingNow() {
     const [myMatching, setMyMatching] = useState([]);
     const [friendMatching, setFriendMatching] = useState([]);
     const [friendSelected, setFriendSelected] = useState([]);
+    const [watchedMovies, setWatchedMovies] = useState([]);
 
     useEffect(() => {
         const getData = async () => {
@@ -59,7 +60,7 @@ export default function WatchingNow() {
         <div className={'watching-now-container'}>
             <div className={'watching-now-title'}>TV Series I'm watching:</div>
             <div className={'watching-now-title'}>
-                <span>Friend to compare:</span>
+                <span>User to compare:</span>
                 <div className={'watching-now-dropdown-container'}>
                     <Select styles={selectStylesOnDark} options={friends} onChange={onChangeFriend}/>
                 </div>
@@ -214,8 +215,8 @@ function WatchingTv({isMe, watching}) {
                             Season {nextSeasonEpisode().nextSeason} Episode {nextSeasonEpisode().nextEpisode}
                         </ActionButton>
                         {seasonState !== 0 && <div><ActionButton sx={{marginTop: '7px'}} onClick={backOneEpisode}>
-                            <ArrowBackIcon/><span
-                            style={{verticalAlign: 'super', marginleft: '5px'}}>Back 1 episode</span>
+                            <ArrowBackIcon sx={{height: '14px', verticalAlign: 'middle'}}/><span
+                            style={{marginleft: '5px'}}>Back 1 episode</span>
                         </ActionButton></div>}
                     </> :
                     <div

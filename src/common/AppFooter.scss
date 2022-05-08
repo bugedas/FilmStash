@@ -1,31 +1,14 @@
 .footer {
-    height: 115px;
-    box-shadow: black 0 10px 50px;
-    background-color: #2b2929;
-    width: 100%;
-    float: bottom;
+  box-shadow: black 0 10px 50px;
+  background-color: #2b2929;
+  width: 100%;
+  float: bottom;
 }
 
 .footer-filmstash {
-    text-align: center;
-    color: #EE3232;
-    font-family: "Lemon-Milk-Light", serif;
-}
-
-.footer-wrapper {
-    margin: 0 auto;
-    max-width: 1200px;
-
-    ul {
-        padding-top: 20px;
-    }
-
-    a {
-        font-family: "Lemon-Milk-Light", serif;
-        color: #EFEDED;
-
-        &:hover {
-            color: #EE3232;
-        }
-    }
+  text-align: center;
+  color: #EE3232;
+  font-family: "Lemon-Milk-Light", serif;
+  padding-top: 30px;
+  padding-bottom: 20px;
 }

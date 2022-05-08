@@ -9,7 +9,7 @@ import {useComponentVisible} from "../util/customHooks";
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import {filmTvLink} from "../util/BaseUtils";
+import {filmTvLink, filmTypeString} from "../util/BaseUtils";
 import {UserContext} from "../contexts/UserContext";
 import {FilmListDialog, FriendsDialog} from "./Dialogs";
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -168,7 +168,7 @@ export function SearchResult({result}) {
             <img className={'hsr-image'} src={resultImage(result)} alt={`${result.name} image`}/>
             <div className={'hsr-info'}>
                 <div className={'hsr-title'}>{result.name || result.title}</div>
-                <div className={'hsr-type'}>{`${result.media_type[0].toUpperCase()}${result.media_type.slice(1)}`}</div>
+                <div className={'hsr-type'}>{filmTypeString(result.media_type)}</div>
             </div>
             {result.media_type === 'person' && <LaunchIcon sx={{marginLeft: 'auto'}}/>}
         </a>
