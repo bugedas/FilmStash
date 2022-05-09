@@ -93,7 +93,7 @@ export default function Film() {
                 {movie?.title}
             </div>
             <div className={'film-page-data'}>
-                <span className={'film-page-year'}>Year: {movie?.release_date}</span>
+                <span className={'film-page-year'}>Release date: {movie?.release_date}</span>
                 <span className={'film-page-imdb'}>IMDB Rating: {movie.vote_average}</span>
                 <Tooltip title="View user reviews">
                     <Fab sx={{marginLeft: '20px'}}
@@ -126,7 +126,7 @@ export default function Film() {
                 <div className={'film-page-share-button'} onClick={() => setShareOpen(!shareOpen)}>
                     WRITE REVIEW
                 </div>
-                <div className={'film-page-share-button'} onClick={addFilmToList}>ADD TO LIST</div>
+                <div className={'film-page-share-button'} onClick={addFilmToList}>WATCH LATER</div>
                 {shareOpen &&
                 <div className={'film-page-sharing-section'}>
                     <textarea className={'film-page-share-input'} rows={5} value={shareMessage}

@@ -112,7 +112,7 @@ export default function TvSeries() {
                 {tv?.name}
             </div>
             <div className={'tv-page-data'}>
-                <span className={'tv-page-year'}>Year: {tv?.first_air_date}</span>
+                <span className={'tv-page-year'}>Release date: {tv?.first_air_date}</span>
                 <span className={'tv-page-imdb'}>IMDB Rating: {tv?.vote_average}</span>
                 <Tooltip title="View user reviews">
                     <Fab sx={{marginLeft: '20px'}}
@@ -145,7 +145,7 @@ export default function TvSeries() {
                 <div className={'tv-page-share-button'} onClick={() => setShareOpen(!shareOpen)}>
                     WRITE REVIEW
                 </div>
-                <div className={'tv-page-share-button'} onClick={addtvToList}>ADD TO LIST</div>
+                <div className={'tv-page-share-button'} onClick={addtvToList}>WATCH LATER</div>
                 <div className={`tv-page-share-button ${watching && 'watching'}`}
                      onClick={handleWatchingClick}>{watching ? 'STOP WATCHING' : 'START WATCHING'}</div>
                 {shareOpen &&
