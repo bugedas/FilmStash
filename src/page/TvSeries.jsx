@@ -14,6 +14,7 @@ import Fab from "@mui/material/Fab";
 import {Tooltip} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import {CastPerson} from "./Film";
+import {showImageNumber} from "../util/BaseUtils";
 
 export default function TvSeries() {
 
@@ -127,9 +128,9 @@ export default function TvSeries() {
                 <div className={'tv-page-bottom-image-container'}>
                     <div className={'tv-page-bottom-arrow-container'}>
                         <ArrowBackIosIcon className={`tv-page-bottom-image-arrow ${imageFrom === 0 && 'hidden'}`}
-                                          onClick={() => setImageFrom(imageFrom - 3)}/>
+                                          onClick={() => setImageFrom(imageFrom - showImageNumber())}/>
                     </div>
-                    {tv?.images?.backdrops?.slice(imageFrom, imageFrom + 3).map(image => {
+                    {tv?.images?.backdrops?.slice(imageFrom, imageFrom + showImageNumber()).map(image => {
                         return (
                             <img key={image?.file_path} src={tmdbImageLink(image?.file_path, 'w300')}
                                  onClick={() => setMainImage(tmdbImageLink(image?.file_path))}
@@ -138,8 +139,8 @@ export default function TvSeries() {
                     })}
                     <div className={'tv-page-bottom-arrow-container'}>
                         <ArrowForwardIosIcon
-                            className={`tv-page-bottom-image-arrow ${imageFrom + 3 >= tv?.images?.backdrops.length && 'hidden'}`}
-                            onClick={() => setImageFrom(imageFrom + 3)}/>
+                            className={`tv-page-bottom-image-arrow ${imageFrom + showImageNumber() >= tv?.images?.backdrops.length && 'hidden'}`}
+                            onClick={() => setImageFrom(imageFrom + showImageNumber())}/>
                     </div>
                 </div>
                 <div className={'tv-page-share-button'} onClick={() => setShareOpen(!shareOpen)}>

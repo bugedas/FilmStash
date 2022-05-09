@@ -80,7 +80,7 @@ export default function WatchingNow() {
                         })}
                     </div>
                     <div className={'watching-now-person-section'}>
-                        <div className={'watching-now-person-name'}>{friendSelected}</div>
+                        <div className={'watching-now-person-name'}>User</div>
                         {friendMatching?.map(tv => {
                             return (
                                 <WatchingTv key={tv.id} isMe={false} watching={tv}/>
@@ -103,7 +103,7 @@ export default function WatchingNow() {
                 </div>
                 {selectedFriendTvs &&
                 <div className={'watching-now-person-section'}>
-                    <div className={'watching-now-person-name'}>{friendSelected}</div>
+                    <div className={'watching-now-person-name'}>User</div>
                     {selectedFriendTvs.map(tv => {
                         return (
                             <WatchingTv key={tv.id} isMe={false} watching={tv}/>

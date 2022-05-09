@@ -13,6 +13,7 @@ import MessageIcon from "@mui/icons-material/Message";
 import {Tooltip} from "@mui/material";
 import {PostsDialog} from "../common/Dialogs";
 import Alert from "@mui/material/Alert";
+import {showImageNumber} from "../util/BaseUtils";
 
 export default function Film() {
     const {id} = useParams()
@@ -73,13 +74,6 @@ export default function Film() {
             getData();
         }
     }, [user]);
-
-    const showImageNumber = () => {
-        if (window.innerWidth > 768) {
-            return 3;
-        }
-        return 1;
-    }
 
     if (movie === null) {
         return null;

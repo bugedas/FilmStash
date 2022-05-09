@@ -62,3 +62,10 @@ export const filmTypeString = (type) => {
     }
     return 'Film';
 }
+
+export const showImageNumber = () => {
+    if (window.innerWidth > 768) {
+        return 3;
+    }
+    return 1;
+}

@@ -19,7 +19,12 @@
   padding-top: 10px;
 }
 
+.tv-page-year {
+  display: inline-block;
+}
+
 .tv-page-imdb {
+  display: inline-block;
   padding-left: 30px;
 }
 
@@ -135,7 +140,8 @@
 .tv-page-bottom-cast-container {
   margin-top: 30px;
   display: flex;
-  //flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .tv-page-bottom-cast-person {
